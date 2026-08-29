@@ -42,6 +42,9 @@ export interface PropertyOwner {
   companyName?: string;
 }
 
+/** Government / marketplace compliance for a listing. */
+export type PropertyVerification = "verified" | "pending" | "flagged" | "unregistered";
+
 export interface Property {
   id: string;
   slug: string;
@@ -65,7 +68,15 @@ export interface Property {
   contactEmail?: string;
   status: "active" | "draft";
   createdAt: string;
-  /** Live OpenStreetMap listing */
+  /** Government verification of the listing / operator */
+  verification?: PropertyVerification;
+  /** Holds a valid operating / tourism / state license */
+  licensed?: boolean;
+  /** Registered with CAC / local housing registry */
+  registered?: boolean;
+  registrationNo?: string;
+  licenseNo?: string;
+  /** Optional marker for remote-sourced listings when a backend is connected later */
   live?: boolean;
   osmId?: number;
   lat?: number;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/Footer";
-import { StatusBadge, naira } from "@/components/civic/StatusBadge";
+import { PropertyComplianceBadges, hotelCompliance, naira } from "@/components/civic/StatusBadge";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { getHotel } from "@/lib/civic/directory";
 import { fetchLiveHotel } from "@/lib/live/useLiveProperties";
@@ -61,9 +61,9 @@ export default function HotelDetailPage() {
         <Link href="/hotels" className="text-sm text-gray-600 hover:text-black">
           ← Hotels
         </Link>
-        {hotel.live ? (
+        {hotel.source === "openstreetmap" || hotel.live ? (
           <p className="mt-2 inline-block rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">
-            Live · OpenStreetMap
+            OpenStreetMap · Verified / Registered
           </p>
         ) : null}
         <div className="relative mt-4 h-52 overflow-hidden rounded-xl sm:h-72 sm:rounded-2xl md:h-96">
@@ -76,19 +76,25 @@ export default function HotelDetailPage() {
               {hotel.address} · {hotel.city}, {hotel.state}
             </p>
           </div>
-          <StatusBadge status={hotel.verification} />
+          <PropertyComplianceBadges {...hotelCompliance(hotel)} />
         </div>
         <div className="mt-5 grid gap-4 sm:mt-6 sm:gap-6 lg:grid-cols-[1fr_320px]">
           <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6">
             <p className="text-sm text-gray-700 sm:text-base">
               {hotel.stars}-star hotel with {hotel.rooms} rooms.
-              {hotel.live
-                ? " This is a live listing mapped from OpenStreetMap. Contact the operator to confirm availability and government registration."
-                : ` Tourism board number ${hotel.tourismBoardNo}. This property is listed so guests can book and so government can confirm it is a registered hotel in Nigeria.`}
+              {` Tourism board number ${hotel.tourismBoardNo}. This property is listed so guests can book and so government can confirm it is a registered hotel in Nigeria.`}
             </p>
             <dl className="mt-5 grid gap-3 text-sm sm:mt-6 sm:grid-cols-2">
               <div>
-                <dt className="text-gray-500">CAC</dt>
+                <dt className="text-gray-500">Verification</dt>
+                <dd className="font-medium capitalize">{hotel.verification}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">License (tourism board)</dt>
+                <dd className="font-medium break-all">{hotel.tourismBoardNo}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">CAC / registration</dt>
                 <dd className="font-medium break-all">{hotel.cacNumber}</dd>
               </div>
               <div>

@@ -2,7 +2,11 @@
 
 **USSAP** — Unified Smart Spatial Addressing Platform.
 
-Next.js app for digital spatial addresses across Nigeria, with a properties & hotels marketplace, role-based workspaces (citizen, telecom, education, field, government, admin), and live map modules.
+Next.js front-end for digital spatial addresses across Nigeria, with a properties & hotels marketplace and role-based workspaces.
+
+## Live listings
+
+Hotels and properties load from **OpenStreetMap** (public map data across Nigeria). No API key required. First refresh can take a minute.
 
 ## Getting Started
 
@@ -11,10 +15,4 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-## Scripts
-
-- `npm run dev` — development server
-- `npm run build` — production build
-- `npm start` — run production build
+Open [http://localhost:3000](http://localhost:3000), then open Hotels or Buy/Rent/Shortlet and click **Refresh from OpenStreetMap**.

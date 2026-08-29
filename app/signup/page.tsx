@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BRAND_NAME, MEMBERSHIP_FEE_NGN } from "@/lib/data";
+import { BRAND_NAME } from "@/lib/data";
 import { useAuth } from "@/lib/auth";
 
 export default function SignupPage() {
@@ -12,7 +12,6 @@ export default function SignupPage() {
   const { register } = useAuth();
   const [accountType, setAccountType] = useState<"agent" | "company">("agent");
   const [showPassword, setShowPassword] = useState(false);
-  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
@@ -29,10 +28,6 @@ export default function SignupPage() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!agreed) {
-      setError("Please acknowledge the membership fee to continue.");
-      return;
-    }
     setLoading(true);
     setError("");
     const result = await register({
@@ -88,8 +83,8 @@ export default function SignupPage() {
 
           <h2 className="text-2xl font-bold text-black">Agent / owner registration</h2>
           <p className="mt-2 text-sm text-gray-600">
-            One-time membership ₦{MEMBERSHIP_FEE_NGN.toLocaleString()}. Listing display is billed per
-            week when you publish (see dashboard).
+            Create a free account to publish listings. Visitors browse without signing in and contact
+            you directly.
           </p>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -118,20 +113,6 @@ export default function SignupPage() {
               <p className="mt-1 text-xs text-gray-600">Agency or developer name on listings</p>
             </button>
           </div>
-
-          <label className="mt-5 flex items-start gap-3 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={(e) => setAgreed(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-gray-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
-            />
-            <span>
-              I understand the one-time membership fee is ₦{MEMBERSHIP_FEE_NGN.toLocaleString()}{" "}
-              (processed at payment step when enabled on the server). Browsing the site does not
-              require an account.
-            </span>
-          </label>
 
           {error ? (
             <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">

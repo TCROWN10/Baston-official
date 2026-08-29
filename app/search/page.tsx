@@ -19,7 +19,8 @@ import type { SearchFilters, SearchTab } from "@/lib/types";
 function SearchInner() {
   const params = useSearchParams();
   const [tab, setTab] = useState<SearchTab>("shortlet");
-  const { items, loading, liveCount } = useLiveProperties(tab);
+  const { items, loading, liveCount, source } = useLiveProperties(tab);
+
   const [filters, setFilters] = useState<SearchFilters>({
     location: params.get("location") || "",
     propertyType: "",
@@ -38,8 +39,8 @@ function SearchInner() {
         <h1 className="mb-1 text-2xl font-bold text-black sm:mb-2 sm:text-3xl">Search</h1>
         <p className="mb-4 text-sm text-gray-600 sm:mb-6">
           {loading
-            ? "Loading live listings from OpenStreetMap…"
-            : `${liveCount} live listings across Nigeria`}
+            ? "Fetching listings from OpenStreetMap…"
+            : `${results.length} listings${liveCount ? ` · ${liveCount} live from OSM` : ""}${source ? ` · ${source}` : ""}`}
         </p>
 
         <div className="mb-4 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">

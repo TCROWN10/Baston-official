@@ -18,7 +18,7 @@ async function loadHotels(refresh: boolean): Promise<{
 }> {
   if (!refresh) {
     const cached = readHotelCache();
-    if (cached) {
+    if (cached?.length) {
       return {
         data: cached,
         source: "cache",
@@ -32,19 +32,22 @@ async function loadHotels(refresh: boolean): Promise<{
     const live = elements
       .map((el) => osmToHotel(el, el.tags?._queryState))
       .filter(Boolean) as HotelRecord[];
-    const merged = dedupeHotels([...live, ...HOTELS.filter((h) => h.source === "registry")]);
+    const merged = dedupeHotels([
+      ...live,
+      ...HOTELS.filter((h) => h.source === "registry"),
+    ]);
     writeHotelCache(merged);
-    return {
-      data: merged,
-      source: "openstreetmap",
-      liveCount: live.length,
-    };
+    return { data: merged, source: "openstreetmap", liveCount: live.length };
   } catch {
     const stale = readStaleHotelCache();
-    if (stale) {
-      return { data: stale, source: "stale-cache", liveCount: stale.filter((h) => h.live).length };
+    if (stale?.length) {
+      return {
+        data: stale,
+        source: "stale-cache",
+        liveCount: stale.filter((h) => h.live).length,
+      };
     }
-    return { data: HOTELS, source: "registry-fallback", liveCount: 0 };
+    return { data: HOTELS, source: "local", liveCount: 0 };
   }
 }
 
@@ -70,5 +73,6 @@ export async function GET(request: NextRequest) {
     liveCount,
     count: filtered.length,
     data: filtered,
+    provider: "openstreetmap",
   });
 }

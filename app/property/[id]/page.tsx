@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { SiteShell } from "@/components/Footer";
-import { getPropertyById, formatLocation, formatPrice, bedLabel } from "@/lib/listings";
+import { PropertyComplianceBadges } from "@/components/civic/StatusBadge";
+import { getPropertyById, formatLocation, formatPrice, bedLabel, withPropertyCompliance } from "@/lib/listings";
 import { fetchLiveProperty } from "@/lib/live/useLiveProperties";
 import { isSaved, toggleSavedHome } from "@/lib/saved";
 import type { Property } from "@/lib/types";
@@ -25,7 +26,7 @@ export default function PropertyPage() {
       const local = getPropertyById(params.id);
       if (local) {
         if (!cancelled) {
-          setProperty(local);
+          setProperty(withPropertyCompliance(local));
           setSaved(isSaved(local.id));
           setLoading(false);
         }
@@ -33,7 +34,7 @@ export default function PropertyPage() {
       }
       const live = await fetchLiveProperty(params.id);
       if (!cancelled) {
-        setProperty(live);
+        setProperty(live ? withPropertyCompliance(live) : null);
         if (live) setSaved(isSaved(live.id));
         setLoading(false);
       }
@@ -102,6 +103,13 @@ export default function PropertyPage() {
           <div>
             <h1 className="text-2xl font-bold text-black sm:text-3xl">{property.title}</h1>
             <p className="mt-1 text-gray-600">{location}</p>
+            <div className="mt-3">
+              <PropertyComplianceBadges
+                verification={property.verification}
+                licensed={property.licensed}
+                registered={property.registered}
+              />
+            </div>
           </div>
           <button
             type="button"
@@ -181,6 +189,47 @@ export default function PropertyPage() {
             >
               {showMore ? "Show less" : "Show More ▾"}
             </button>
+
+            <h2 className="mb-3 mt-8 text-lg font-semibold text-black">
+              Verification & registration
+            </h2>
+            <div className="rounded-xl border border-gray-200 bg-slate-50 p-4">
+              <PropertyComplianceBadges
+                verification={property.verification}
+                licensed={property.licensed}
+                registered={property.registered}
+              />
+              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt className="text-gray-500">Government verification</dt>
+                  <dd className="font-medium capitalize text-black">{property.verification}</dd>
+                </div>
+                <div>
+                  <dt className="text-gray-500">Operating license</dt>
+                  <dd className="font-medium text-black">
+                    {property.licensed
+                      ? property.licenseNo || "Licensed"
+                      : "Not licensed / not confirmed"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-gray-500">Registry registration</dt>
+                  <dd className="font-medium text-black">
+                    {property.registered
+                      ? property.registrationNo || "Registered"
+                      : "Not registered / not confirmed"}
+                  </dd>
+                </div>
+                {property.live ? (
+                  <div>
+                    <dt className="text-gray-500">Data source</dt>
+                    <dd className="font-medium text-black">
+                      Live map listing — confirm paperwork with the operator
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
 
             <h2 className="mb-3 mt-8 text-lg font-semibold text-black">Amenities</h2>
             <ul className="grid gap-2 sm:grid-cols-2">

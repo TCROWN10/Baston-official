@@ -16,8 +16,7 @@ export default function TermsPage() {
             contact information they publish.
           </p>
           <p>
-            Membership and weekly listing fees are non-transferable. {BRAND_NAME} may remove listings
-            that violate these terms or local regulations.
+            {BRAND_NAME} may remove listings that violate these terms or local regulations.
           </p>
         </div>
       </section>

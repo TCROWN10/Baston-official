@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/lib/auth";
-import { BRAND_NAME, LISTING_FEE_PER_WEEK_NGN } from "@/lib/data";
+import { BRAND_NAME } from "@/lib/data";
 import { getAllProperties } from "@/lib/listings";
 import type { Property } from "@/lib/types";
 
@@ -107,8 +107,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl font-bold text-black">Dashboard</h1>
           <p className="mt-1 text-gray-600">
-            Listing display is billed at ₦{LISTING_FEE_PER_WEEK_NGN.toLocaleString()} per week when
-            you publish.
+            Manage your property adverts. Visitors can contact you directly from each listing.
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">

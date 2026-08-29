@@ -9,11 +9,7 @@ export default function FaqsPage() {
     },
     {
       q: "Who needs to register?",
-      a: "Only agents, owners, and companies that want to publish listings.",
-    },
-    {
-      q: "How much does membership cost?",
-      a: "Agent membership is a one-time ₦5,000 fee. Listing display is billed per week when you publish.",
+      a: "Only agents, owners, and companies that want to publish listings. Registration is free.",
     },
     {
       q: "How do I contact a host or agent?",

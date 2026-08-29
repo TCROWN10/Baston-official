@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
-import { BRAND_NAME, LISTING_FEE_PER_WEEK_NGN } from "@/lib/data";
+import { BRAND_NAME } from "@/lib/data";
 import { saveUserListing } from "@/lib/listings";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { NIGERIA_STATES } from "@/lib/civic/directory";
@@ -13,7 +13,6 @@ import type { ListingCategory, Property, PropertyType } from "@/lib/types";
 export default function NewListingPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [weeks, setWeeks] = useState(1);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -98,10 +97,6 @@ export default function NewListingPage() {
           <Link href="/dashboard" className="font-bold text-black">
             ← {BRAND_NAME} Dashboard
           </Link>
-          <span className="text-sm text-gray-500">
-            ₦{(LISTING_FEE_PER_WEEK_NGN * weeks).toLocaleString()} for {weeks} week
-            {weeks > 1 ? "s" : ""}
-          </span>
         </div>
       </header>
 
@@ -217,18 +212,6 @@ export default function NewListingPage() {
             className="field-control px-4 py-2.5 text-sm"
           />
         </div>
-
-        <label className="block text-sm text-gray-700">
-          Listing duration (weeks)
-          <input
-            type="number"
-            min={1}
-            max={12}
-            value={weeks}
-            onChange={(e) => setWeeks(Number(e.target.value) || 1)}
-            className="field-control mt-1 px-4 py-2.5 text-sm"
-          />
-        </label>
 
         <button
           type="submit"

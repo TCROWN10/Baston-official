@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { withPropertyCompliance } from "@/lib/listings";
 import type { Property } from "@/lib/types";
 import type { SearchTab } from "@/lib/types";
 
@@ -34,7 +35,7 @@ export function useLiveProperties(tab?: SearchTab): Result {
           source: string;
           liveCount: number;
         };
-        setItems(json.data ?? []);
+        setItems((json.data ?? []).map((p) => withPropertyCompliance(p)));
         setSource(json.source ?? "unknown");
         setLiveCount(json.liveCount ?? 0);
       } catch {
@@ -65,7 +66,7 @@ export async function fetchLiveProperty(id: string): Promise<Property | null> {
     const res = await fetch(`/api/live/properties?id=${encodeURIComponent(id)}`);
     if (!res.ok) return null;
     const json = (await res.json()) as { property: Property };
-    return json.property ?? null;
+    return json.property ? withPropertyCompliance(json.property) : null;
   } catch {
     return null;
   }

@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { StatusBadge, naira } from "@/components/civic/StatusBadge";
+import { PropertyComplianceBadges, hotelCompliance, naira } from "@/components/civic/StatusBadge";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { NIGERIA_STATES } from "@/lib/civic/directory";
 import type { CompanyRecord, HotelRecord, SchoolRecord } from "@/lib/civic/types";
 
 type Item = HotelRecord | SchoolRecord | CompanyRecord;
+
+function sourceLabel(source?: string) {
+  if (source === "openstreetmap" || source === "cache" || source === "stale-cache") {
+    return "OpenStreetMap (Nigeria)";
+  }
+  if (!source || source === "local") return "local demo listings";
+  return source;
+}
 
 export function DirectoryGrid({
   items,
@@ -54,10 +62,10 @@ export function DirectoryGrid({
         <div className="mb-4 flex flex-col gap-3 rounded-xl bg-[#1e3a5f]/10 px-3 py-3 text-sm text-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-4">
           <p className="min-w-0 break-words">
             {loading
-              ? "Fetching live hotels from OpenStreetMap across Nigeria…"
+              ? "Fetching hotels from OpenStreetMap across Nigeria…"
               : error
                 ? error
-                : `${items.length} hotels · ${liveCount ?? 0} live from OpenStreetMap · source: ${source}`}
+                : `${items.length} hotels · ${liveCount ?? 0} live from OSM · ${sourceLabel(source)}`}
           </p>
           {onRefresh ? (
             <button
@@ -66,7 +74,7 @@ export function DirectoryGrid({
               disabled={loading}
               className="cursor-pointer shrink-0 rounded-lg bg-[#1e3a5f] px-3 py-2 text-xs font-medium text-white disabled:opacity-60 sm:py-1.5"
             >
-              Refresh live data
+              Refresh from OpenStreetMap
             </button>
           ) : null}
         </div>
@@ -88,7 +96,9 @@ export function DirectoryGrid({
         <p className="flex items-center text-sm text-gray-600 sm:col-span-2 lg:col-span-1">
           {loading ? "Loading…" : `${filtered.length} records`}
           {!loading && kind === "hotel"
-            ? " · OpenStreetMap + registry"
+            ? source === "openstreetmap" || source === "cache" || source === "stale-cache"
+              ? " · OpenStreetMap + registry"
+              : " · local directory"
             : !loading
               ? " · directory"
               : ""}
@@ -135,10 +145,17 @@ export function DirectoryGrid({
               <div className="space-y-2 p-3 sm:p-4">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="line-clamp-2 min-w-0 font-bold text-black">{item.name}</h3>
-                  <div className="shrink-0">
-                    <StatusBadge status={item.verification} />
-                  </div>
                 </div>
+                <PropertyComplianceBadges
+                  {...(kind === "hotel" && "tourismBoardNo" in item
+                    ? hotelCompliance(item)
+                    : {
+                        verification: item.verification,
+                        licensed: item.verification === "verified",
+                        registered: item.verification === "verified",
+                      })}
+                  compact
+                />
                 <p className="truncate text-sm text-gray-600">
                   {item.city}, {item.state}
                 </p>

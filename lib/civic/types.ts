@@ -2,7 +2,7 @@ export type VerificationStatus = "pending" | "verified" | "flagged" | "unregiste
 
 export interface DirectoryPlace {
   id: string;
-  source: "openstreetmap" | "registry";
+  source: "openstreetmap" | "registry" | "local" | "google";
   osmId?: number;
   name: string;
   slug: string;

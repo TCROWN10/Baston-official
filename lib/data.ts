@@ -704,8 +704,5 @@ export const PROPERTY_TYPES = [
   },
 ] as const;
 
-export const MEMBERSHIP_FEE_NGN = 5000;
-export const LISTING_FEE_PER_WEEK_NGN = 5000;
-
 export const BRAND_NAME = "USSAP";
 export const BRAND_FULL_NAME = "Unified Smart Spatial Addressing Platform";

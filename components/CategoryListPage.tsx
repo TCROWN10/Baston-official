@@ -15,19 +15,19 @@ const COPY: Record<
   buy: {
     title: "Buy Your Dream Home",
     subtitle:
-      "Live property listings from OpenStreetMap across Nigeria, merged with verified agent adverts.",
+      "Live properties from OpenStreetMap across Nigeria — photos plus verified and registered status.",
     heading: "Properties for sale",
   },
   rent: {
     title: "Rent a Home You'll Love",
     subtitle:
-      "Live rentals and apartments mapped across Nigeria — browse and contact agents directly.",
+      "Live rentals and apartments from OpenStreetMap across Nigeria — browse and contact operators.",
     heading: "Rental properties",
   },
   shortlet: {
     title: "Shortlet adverts",
     subtitle:
-      "Live short-stay apartments, guest houses, and serviced flats from OpenStreetMap nationwide.",
+      "Short-stays, guest houses, and hotels from OpenStreetMap nationwide.",
     heading: "Shortlet properties",
   },
 };
@@ -60,21 +60,21 @@ export function CategoryListPage({ tab }: { tab: SearchTab }) {
             disabled={loading}
             className="cursor-pointer w-full rounded-lg bg-[#1e3a5f] px-3 py-2.5 text-xs font-medium text-white disabled:opacity-60 sm:w-auto sm:py-1.5"
           >
-            Refresh live data
+            Refresh from OpenStreetMap
           </button>
         </div>
         <div className="mb-5 rounded-xl bg-[#1e3a5f]/10 px-3 py-3 text-sm text-slate-700 sm:mb-6 sm:px-4">
           {loading
-            ? "Fetching live properties from OpenStreetMap across Nigeria… (first load may take a minute)"
+            ? "Fetching listings from OpenStreetMap across Nigeria… (first load can take a minute)"
             : error
               ? error
-              : `${properties.length} listings · ${liveCount} live from OpenStreetMap · source: ${source}`}
+              : `${properties.length} listings · ${liveCount} live from OSM · source: ${source}`}
         </div>
         {loading ? (
           <div className="flex min-h-[240px] items-center justify-center sm:min-h-[280px]">
             <div className="text-center">
               <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-[#1e3a5f]" />
-              <p className="mt-4 text-gray-600">Loading live properties...</p>
+              <p className="mt-4 text-gray-600">Loading properties...</p>
             </div>
           </div>
         ) : (

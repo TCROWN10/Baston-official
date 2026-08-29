@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PROPERTIES } from "@/lib/data";
+import { withPropertyCompliance } from "@/lib/listings";
 import type { Property } from "@/lib/types";
 import {
   readPropertyCache,
@@ -18,7 +19,7 @@ async function loadProperties(refresh: boolean): Promise<{
 }> {
   if (!refresh) {
     const cached = readPropertyCache();
-    if (cached) {
+    if (cached?.length) {
       return {
         data: cached,
         source: "cache",
@@ -34,21 +35,17 @@ async function loadProperties(refresh: boolean): Promise<{
       .filter(Boolean) as Property[];
     const merged = dedupeProperties([...live, ...PROPERTIES]);
     writePropertyCache(merged);
-    return {
-      data: merged,
-      source: "openstreetmap",
-      liveCount: live.length,
-    };
+    return { data: merged, source: "openstreetmap", liveCount: live.length };
   } catch {
     const stale = readStalePropertyCache();
-    if (stale) {
+    if (stale?.length) {
       return {
         data: stale,
         source: "stale-cache",
         liveCount: stale.filter((p) => p.live).length,
       };
     }
-    return { data: PROPERTIES, source: "registry-fallback", liveCount: 0 };
+    return { data: PROPERTIES, source: "local", liveCount: 0 };
   }
 }
 
@@ -57,7 +54,8 @@ export async function GET(request: NextRequest) {
   const refresh = request.nextUrl.searchParams.get("refresh") === "1";
   const tab = request.nextUrl.searchParams.get("tab") as "buy" | "rent" | "shortlet" | null;
 
-  const { data, source, liveCount } = await loadProperties(refresh);
+  const { data: raw, source, liveCount } = await loadProperties(refresh);
+  const data = raw.map(withPropertyCompliance);
 
   if (id) {
     const hit = data.find((p) => p.id === id || p.slug === id);
@@ -77,5 +75,6 @@ export async function GET(request: NextRequest) {
     liveCount,
     count: filtered.length,
     data: filtered,
+    provider: "openstreetmap",
   });
 }

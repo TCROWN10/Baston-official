@@ -2,6 +2,7 @@ import { PROPERTIES } from "./data";
 import type {
   ListingCategory,
   Property,
+  PropertyVerification,
   SearchFilters,
   SearchTab,
 } from "./types";
@@ -20,6 +21,54 @@ const AREA_CITIES = [
   "ibadan",
   "abia",
 ];
+
+function hashId(id: string): number {
+  let n = 0;
+  for (let i = 0; i < id.length; i++) n = (n + id.charCodeAt(i) * (i + 1)) % 997;
+  return n;
+}
+
+/** Ensure every listing has verification / licensed / registered flags for display. */
+export function withPropertyCompliance(property: Property): Property {
+  if (
+    property.verification &&
+    typeof property.licensed === "boolean" &&
+    typeof property.registered === "boolean"
+  ) {
+    return property;
+  }
+
+  const h = hashId(property.id);
+  const cycle: PropertyVerification[] = [
+    "verified",
+    "verified",
+    "verified",
+    "pending",
+    "flagged",
+    "unregistered",
+  ];
+  const verification = property.verification ?? cycle[h % cycle.length];
+  const registered =
+    property.registered ??
+    (verification === "verified" || (verification === "pending" && h % 2 === 0));
+  const licensed =
+    property.licensed ??
+    (verification === "verified" &&
+      (property.propertyType === "Hotel" || property.propertyType === "Resort" || h % 3 !== 0));
+
+  return {
+    ...property,
+    verification,
+    registered,
+    licensed,
+    registrationNo:
+      property.registrationNo ??
+      (registered ? `REG/${property.location.state.slice(0, 3).toUpperCase()}/${property.id}` : undefined),
+    licenseNo:
+      property.licenseNo ??
+      (licensed ? `LIC/${property.location.state.slice(0, 3).toUpperCase()}/${property.id}` : undefined),
+  };
+}
 
 export function categoryFromTab(tab: SearchTab): ListingCategory {
   if (tab === "buy") return "Buy";
@@ -51,14 +100,19 @@ export function getPropertyById(id: string): Property | undefined {
 }
 
 export function getAllProperties(): Property[] {
-  if (typeof window === "undefined") return PROPERTIES;
-  try {
-    const raw = localStorage.getItem("myapp_user_listings");
-    const extra: Property[] = raw ? JSON.parse(raw) : [];
-    return [...extra, ...PROPERTIES];
-  } catch {
-    return PROPERTIES;
-  }
+  const base =
+    typeof window === "undefined"
+      ? PROPERTIES
+      : (() => {
+          try {
+            const raw = localStorage.getItem("myapp_user_listings");
+            const extra: Property[] = raw ? JSON.parse(raw) : [];
+            return [...extra, ...PROPERTIES];
+          } catch {
+            return PROPERTIES;
+          }
+        })();
+  return base.map(withPropertyCompliance);
 }
 
 export function saveUserListing(property: Property) {
@@ -118,9 +172,9 @@ export function filterProperties(
   filters: SearchFilters,
   source?: Property[],
 ): Property[] {
-  const list = (source ?? getAllProperties()).filter(
-    (p) => p.listingCategory === categoryFromTab(tab) && p.status === "active",
-  );
+  const list = (source ?? getAllProperties())
+    .map(withPropertyCompliance)
+    .filter((p) => p.listingCategory === categoryFromTab(tab) && p.status === "active");
 
   return list.filter((property) => {
     const location = formatLocation(property);

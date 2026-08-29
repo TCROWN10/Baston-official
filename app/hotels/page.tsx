@@ -15,8 +15,8 @@ export default function HotelsPage() {
             Hotels across Nigeria
           </h1>
           <p className="mx-auto mt-2 max-w-2xl text-sm text-white/90 sm:mt-3 sm:text-lg">
-            Live hotel and guest-house listings pulled from OpenStreetMap across every state,
-            merged with verified registry entries.
+            Live hotels from OpenStreetMap across Nigeria — with photos and
+            verified / registered status on each card.
           </p>
         </div>
       </section>

@@ -14,8 +14,7 @@ export default function SellPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90 sm:text-xl">
             Advertise your property to serious buyers. Visitors browse without signing in and contact
-            you by phone. Agent membership ₦5,000; listing display is billed per week when you
-            publish.
+            you by phone, email, or WhatsApp.
           </p>
           <Link
             href="/signup"

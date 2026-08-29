@@ -3,18 +3,20 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PropertyComplianceBadges } from "@/components/civic/StatusBadge";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { isSaved, toggleSavedHome } from "@/lib/saved";
-import { bedLabel, formatLocation, formatPrice } from "@/lib/listings";
+import { bedLabel, formatLocation, formatPrice, withPropertyCompliance } from "@/lib/listings";
 import type { Property } from "@/lib/types";
 
 export function PropertyCard({
-  property,
+  property: raw,
   variant = "shortlet",
 }: {
   property: Property;
   variant?: "shortlet" | "sale";
 }) {
+  const property = withPropertyCompliance(raw);
   const router = useRouter();
   const [saved, setSaved] = useState(false);
   const price = formatPrice(property);
@@ -45,6 +47,15 @@ export function PropertyCard({
     );
   };
 
+  const badges = (
+    <PropertyComplianceBadges
+      verification={property.verification}
+      licensed={property.licensed}
+      registered={property.registered}
+      compact
+    />
+  );
+
   if (variant === "sale") {
     return (
       <article className="group relative flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
@@ -57,6 +68,7 @@ export function PropertyCard({
               className="object-cover transition-transform group-hover:scale-105"
               sizes="(max-width:768px) 100vw, 33vw"
             />
+            <div className="absolute left-3 top-3 z-10 max-w-[85%]">{badges}</div>
             <button
               type="button"
               onClick={onToggle}
@@ -97,11 +109,14 @@ export function PropertyCard({
           className="object-cover transition-transform group-hover:scale-105"
           sizes="(max-width:768px) 100vw, 33vw"
         />
-        {property.hasHourlyReservation ? (
-          <div className="absolute left-3 top-3 rounded-md bg-white px-3 py-1.5 text-xs font-medium text-black">
-            Hourly Reservation Available
-          </div>
-        ) : null}
+        <div className="absolute left-3 top-3 z-10 max-w-[90%]">
+          {property.hasHourlyReservation ? (
+            <div className="mb-1 rounded-md bg-white px-2.5 py-1 text-[10px] font-medium text-black sm:text-xs">
+              Hourly Reservation Available
+            </div>
+          ) : null}
+          {badges}
+        </div>
         <button
           type="button"
           onClick={onToggle}
@@ -129,7 +144,9 @@ export function PropertyCard({
           <span className="text-yellow-400">☆</span>
           <span>{rating} Rating</span>
         </div>
-        <p className="text-xs text-gray-500">{bedLabel(property.bedrooms)} · {property.propertyType}</p>
+        <p className="text-xs text-gray-500">
+          {bedLabel(property.bedrooms)} · {property.propertyType}
+        </p>
         <button
           type="button"
           onClick={() => router.push(`/property/${property.id}`)}

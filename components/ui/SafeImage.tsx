@@ -15,12 +15,14 @@ export function SafeImage({
   ...props
 }: Props) {
   const [current, setCurrent] = useState(src || fallbackSrc);
+  const isApiPhoto = typeof current === "string" && current.startsWith("/api/");
 
   return (
     <Image
       {...props}
       alt={alt}
       src={current || fallbackSrc}
+      unoptimized={isApiPhoto || props.unoptimized}
       onError={() => {
         if (current !== fallbackSrc) setCurrent(fallbackSrc);
       }}
