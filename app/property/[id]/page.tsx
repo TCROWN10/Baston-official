@@ -1,0 +1,260 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { SiteShell } from "@/components/Footer";
+import { getPropertyById, formatLocation, formatPrice, bedLabel } from "@/lib/listings";
+import { fetchLiveProperty } from "@/lib/live/useLiveProperties";
+import { isSaved, toggleSavedHome } from "@/lib/saved";
+import type { Property } from "@/lib/types";
+
+export default function PropertyPage() {
+  const params = useParams<{ id: string }>();
+  const router = useRouter();
+  const [property, setProperty] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const local = getPropertyById(params.id);
+      if (local) {
+        if (!cancelled) {
+          setProperty(local);
+          setSaved(isSaved(local.id));
+          setLoading(false);
+        }
+        return;
+      }
+      const live = await fetchLiveProperty(params.id);
+      if (!cancelled) {
+        setProperty(live);
+        if (live) setSaved(isSaved(live.id));
+        setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [params.id]);
+
+  const location = useMemo(
+    () => (property ? formatLocation(property) : ""),
+    [property],
+  );
+  const price = useMemo(() => (property ? formatPrice(property) : ""), [property]);
+
+  if (loading) {
+    return (
+      <SiteShell>
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <p className="text-gray-600">Loading property...</p>
+        </div>
+      </SiteShell>
+    );
+  }
+
+  if (!property) {
+    return (
+      <SiteShell>
+        <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold text-black">Failed to load property</h1>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="mt-6 rounded-lg bg-[#1e3a5f] px-5 py-2.5 text-sm font-medium text-white"
+          >
+            Back home
+          </button>
+        </div>
+      </SiteShell>
+    );
+  }
+
+  const amenities = showAllAmenities
+    ? property.amenities
+    : property.amenities.slice(0, 4);
+  const phone = property.owner.phone;
+  const email = property.contactEmail || property.owner.email;
+  const whatsapp = property.whatsappNumber || phone.replace(/\D/g, "");
+  const ownerName =
+    `${property.owner.firstName} ${property.owner.lastName}`.trim() ||
+    property.owner.companyName ||
+    "Agent";
+
+  return (
+    <SiteShell>
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-10">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="mb-4 flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-black"
+        >
+          ← Back
+        </button>
+
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-black sm:text-3xl">{property.title}</h1>
+            <p className="mt-1 text-gray-600">{location}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              setSaved(
+                toggleSavedHome({
+                  id: property.id,
+                  title: property.title,
+                  location,
+                  image: property.images[0],
+                  price,
+                  details: `${bedLabel(property.bedrooms)} · ${property.rating.toFixed(1)} Rating`,
+                }),
+              )
+            }
+            className={`cursor-pointer rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              saved
+                ? "border-red-200 bg-red-50 text-red-600 hover:bg-red-100"
+                : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {saved ? "Remove from saved homes" : "Save to Saved Homes"}
+          </button>
+        </div>
+
+        <div className="mb-8 grid gap-2 sm:grid-cols-4 sm:grid-rows-2">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-xl sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[360px]">
+            <Image
+              src={property.images[0]}
+              alt={property.title}
+              fill
+              className="object-cover"
+              sizes="(max-width:768px) 100vw, 50vw"
+              priority
+            />
+          </div>
+          {property.images.slice(1, 5).map((img, idx) => (
+            <div
+              key={img}
+              className="relative hidden aspect-[4/3] overflow-hidden rounded-xl sm:block"
+            >
+              <Image
+                src={img}
+                alt={`${property.title} ${idx + 2}`}
+                fill
+                className="object-cover"
+                sizes="25vw"
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+          <div>
+            <div className="mb-4 flex flex-wrap gap-3 text-sm text-gray-600">
+              <span className="rounded-full bg-slate-100 px-3 py-1 font-medium text-black">
+                {property.propertyType}
+              </span>
+              <span>{property.listingCategory}</span>
+              {property.bedrooms > 0 ? <span>{bedLabel(property.bedrooms)}</span> : <span>Studio</span>}
+              <span>{property.bathrooms} Baths</span>
+              <span>{property.maxGuests} Guests</span>
+              <span className="flex items-center gap-1">
+                <span className="text-yellow-400">☆</span>
+                {property.rating.toFixed(1)}
+              </span>
+            </div>
+
+            <h2 className="mb-2 text-lg font-semibold text-black">About this place</h2>
+            <p className={`text-gray-700 ${showMore ? "" : "line-clamp-4"}`}>
+              {property.description}
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowMore((v) => !v)}
+              className="mt-2 text-sm font-medium text-[#1e3a5f]"
+            >
+              {showMore ? "Show less" : "Show More ▾"}
+            </button>
+
+            <h2 className="mb-3 mt-8 text-lg font-semibold text-black">Amenities</h2>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {amenities.map((item) => (
+                <li key={item} className="flex items-center gap-2 text-sm text-gray-700">
+                  <span className="text-[#1e3a5f]">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            {property.amenities.length > 4 ? (
+              <button
+                type="button"
+                onClick={() => setShowAllAmenities((v) => !v)}
+                className="mt-3 text-sm font-medium text-[#1e3a5f]"
+              >
+                {showAllAmenities
+                  ? "Show fewer amenities"
+                  : `Show all ${property.amenities.length} amenities`}
+              </button>
+            ) : null}
+          </div>
+
+          <aside className="h-fit rounded-2xl border border-gray-200 bg-white p-5 shadow-md">
+            <p className="text-2xl font-bold text-black">{price}</p>
+            <p className="mt-1 flex items-center gap-1 text-sm text-gray-600">
+              <span className="text-yellow-400">☆</span>
+              {property.rating.toFixed(1)} · {property.reviewsCount} reviews
+            </p>
+
+            <div className="mt-5 flex items-center gap-3 border-t border-gray-100 pt-5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1e3a5f] text-sm font-bold text-white">
+                {ownerName.charAt(0)}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-black">{ownerName}</p>
+                <p className="text-xs text-gray-500">
+                  {property.owner.companyName || "Listed agent"}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-2">
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="rounded-lg bg-[#1e3a5f] px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#152a45]"
+              >
+                Call agent
+              </a>
+              <a
+                href={`mailto:${email}?subject=${encodeURIComponent(property.title)}&body=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
+                className="rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50"
+              >
+                Email agent
+              </a>
+              <a
+                href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-green-600 px-4 py-2.5 text-center text-sm font-medium text-green-700 transition-colors hover:bg-green-50"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+
+            <Link
+              href="/signup"
+              className="mt-4 block text-center text-xs text-gray-500 hover:text-[#1e3a5f]"
+            >
+              Are you an agent? List your property
+            </Link>
+          </aside>
+        </div>
+      </div>
+    </SiteShell>
+  );
+}

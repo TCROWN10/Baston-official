@@ -1,26 +1,181 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Navy primary */
+  --brand: #1e3a5f;
+  --brand-dark: #152a45;
+  --brand-deep: #0f1f35;
+  --accent: #3d7ea6;
+  --accent-dark: #326a8c;
+  --field-bg: #e8eef4;
+  --field-bg-hover: #d9e3ee;
+  --field-focus: #eef5fb;
+  --field-text: #0f172a;
+  --surface: #f4f7fa;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-deep: var(--brand-deep);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface);
+  color: #0f172a;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+.leaflet-container {
+  width: 100%;
+  z-index: 0;
+  font: inherit;
+}
+
+@media (max-width: 640px) {
+  .leaflet-control-attribution {
+    max-width: 70vw;
+    font-size: 9px !important;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.field-control,
+input.field-control,
+textarea.field-control,
+select.field-control,
+button.field-control {
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  border-radius: 0.75rem;
+  background: var(--field-bg);
+  color: var(--field-text);
+  box-shadow: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 0.15s ease;
+}
+
+.field-control:hover,
+input.field-control:hover,
+textarea.field-control:hover,
+button.field-control:hover {
+  background: var(--field-bg-hover);
+}
+
+.field-control:focus,
+input.field-control:focus,
+textarea.field-control:focus,
+select.field-control:focus,
+button.field-control:focus,
+.field-control:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background: var(--field-focus);
+}
+
+.field-control::placeholder,
+input.field-control::placeholder,
+textarea.field-control::placeholder {
+  color: #94a3b8;
+}
+
+.field-control:disabled,
+input.field-control:disabled,
+textarea.field-control:disabled,
+button.field-control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0.75rem;
+  background: var(--field-bg);
+  color: var(--field-text);
+  transition: background-color 0.15s ease;
+}
+
+.custom-select-trigger:hover {
+  background: var(--field-bg-hover);
+}
+
+.custom-select-trigger:focus,
+.custom-select-trigger:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background: var(--field-focus);
+}
+
+.custom-select-trigger.is-open {
+  background: var(--field-focus);
+}
+
+.custom-select-menu {
+  border: none !important;
+  outline: none !important;
+  border-radius: 0.85rem;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(30, 58, 95, 0.16);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+textarea,
+select {
+  border: none !important;
+  outline: none !important;
+  border-radius: 0.75rem;
+  background: var(--field-bg);
+  color: var(--field-text);
+  box-shadow: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]):focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  background: var(--field-focus);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]):hover,
+textarea:hover,
+select:hover {
+  background: var(--field-bg-hover);
 }

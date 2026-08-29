@@ -1,0 +1,22 @@
+import { SiteShell } from "@/components/Footer";
+import { DirectoryGrid } from "@/components/civic/DirectoryGrid";
+import { SCHOOLS } from "@/lib/civic/directory";
+
+export default function SchoolsPage() {
+  return (
+    <SiteShell>
+      <section className="bg-gradient-to-br from-[#1e3a5f] to-[#0f1f35] px-4 py-12 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-7xl text-center">
+          <h1 className="text-3xl font-bold text-white sm:text-5xl">Schools registry</h1>
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-white/90">
+            A public directory of schools for government verification. My App does not run adverts
+            for schools.
+          </p>
+        </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
+        <DirectoryGrid items={SCHOOLS} kind="school" />
+      </section>
+    </SiteShell>
+  );
+}

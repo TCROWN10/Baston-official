@@ -1,0 +1,16 @@
+{
+  "name": "Unified Smart Spatial Addressing Platform",
+  "short_name": "USSAP",
+  "description": "Precise digital addresses for schools, telecom, projects, traffic, and homes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fa",
+  "theme_color": "#1e3a5f",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
