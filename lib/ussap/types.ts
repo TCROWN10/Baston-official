@@ -40,6 +40,8 @@ export interface DigitalAddress {
   createdAt: string;
   updatedAt: string;
   ownerOrg?: string;
+  ownerUserId?: string;
+  ownerEmail?: string;
   tags?: string[];
 }
 

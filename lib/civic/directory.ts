@@ -1,7 +1,15 @@
 import directory from "./directory.json";
+import { assignUniqueHotelImages } from "./facility-images";
 import type { CompanyRecord, HotelRecord, SchoolRecord } from "./types";
 
-export const HOTELS = directory.hotels as HotelRecord[];
+const rawHotels = directory.hotels as HotelRecord[];
+const hotelImages = assignUniqueHotelImages(rawHotels.map((h) => ({ id: h.id })));
+
+export const HOTELS: HotelRecord[] = rawHotels.map((h) => ({
+  ...h,
+  images: [hotelImages.get(h.id) ?? h.images?.[0]].filter(Boolean) as string[],
+}));
+
 export const SCHOOLS = directory.schools as SchoolRecord[];
 export const COMPANIES = directory.companies as CompanyRecord[];
 

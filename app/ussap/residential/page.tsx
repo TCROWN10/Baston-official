@@ -6,11 +6,13 @@ import { UssapShell } from "@/components/ussap/UssapShell";
 import { SiteCard } from "@/components/ussap/SiteCard";
 import { useAuth } from "@/lib/auth";
 import { encodeGrid, formatCode, shareAddress } from "@/lib/ussap/geocode";
+import { privacyViewerFromUser } from "@/lib/ussap/property-privacy";
 import { sitesBySector, upsertSite } from "@/lib/ussap/registry";
 import type { ResidentialSite, UssapRole } from "@/lib/ussap/types";
 
 export default function ResidentialPage() {
   const { user } = useAuth();
+  const viewer = privacyViewerFromUser(user);
   const role = user?.role as UssapRole | undefined;
   const [tick, setTick] = useState(0);
   const [form, setForm] = useState({
@@ -27,7 +29,15 @@ export default function ResidentialPage() {
     return sitesBySector("residential", role) as ResidentialSite[];
   }, [role, tick]);
 
-  const canRegister = role === "citizen" || role === "admin" || role === "government" || role === "field_agent";
+  const canRegister = Boolean(
+    user &&
+      (user.role === "citizen" ||
+        user.role === "admin" ||
+        user.role === "government" ||
+        user.role === "field_agent" ||
+        user.role === "agent" ||
+        user.role === "company"),
+  );
 
   const register = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +126,14 @@ export default function ResidentialPage() {
         </form>
       ) : (
         <p className="mt-4 text-sm text-slate-600">
-          Sign in as <strong>citizen@ussap.ng</strong> / citizen123 to register a home address.
+          <Link href="/login" className="font-medium text-[#1e3a5f] hover:underline">
+            Sign in
+          </Link>{" "}
+          to register a home address, or use{" "}
+          <Link href="/dashboard" className="font-medium text-[#1e3a5f] hover:underline">
+            My property
+          </Link>{" "}
+          on your dashboard.
         </p>
       )}
 
@@ -145,7 +162,7 @@ export default function ResidentialPage() {
               <p className="mt-3 text-xs text-slate-400">Private — not shareable</p>
             )}
             <div className="mt-3">
-              <SiteCard site={site} />
+              <SiteCard site={site} viewer={viewer} />
             </div>
           </article>
         ))}

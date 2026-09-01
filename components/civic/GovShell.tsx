@@ -8,6 +8,7 @@ import { BRAND_NAME } from "@/lib/data";
 
 const NAV = [
   { href: "/government", label: "Overview" },
+  { href: "/government/accounts", label: "All accounts" },
   { href: "/government/hotels", label: "Hotels" },
   { href: "/government/companies", label: "Companies" },
   { href: "/government/schools", label: "Schools" },

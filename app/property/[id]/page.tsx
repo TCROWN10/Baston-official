@@ -6,14 +6,19 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { SiteShell } from "@/components/Footer";
 import { PropertyComplianceBadges } from "@/components/civic/StatusBadge";
-import { getPropertyById, formatLocation, formatPrice, bedLabel, withPropertyCompliance } from "@/lib/listings";
+import { PropertyPrivacyBanner } from "@/components/ussap/PropertyPrivacyBanner";
+import { useAuth } from "@/lib/auth";
+import { viewListingProperty } from "@/lib/listings-privacy";
+import { getPropertyById, formatPrice, bedLabel, withPropertyCompliance } from "@/lib/listings";
 import { fetchLiveProperty } from "@/lib/live/useLiveProperties";
+import { privacyViewerFromUser } from "@/lib/ussap/property-privacy";
 import { isSaved, toggleSavedHome } from "@/lib/saved";
 import type { Property } from "@/lib/types";
 
 export default function PropertyPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
+  const { user } = useAuth();
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
@@ -44,9 +49,14 @@ export default function PropertyPage() {
     };
   }, [params.id]);
 
+  const listingView = useMemo(
+    () => (property ? viewListingProperty(property, privacyViewerFromUser(user)) : null),
+    [property, user],
+  );
+
   const location = useMemo(
-    () => (property ? formatLocation(property) : ""),
-    [property],
+    () => (listingView ? listingView.location.display : ""),
+    [listingView],
   );
   const price = useMemo(() => (property ? formatPrice(property) : ""), [property]);
 
@@ -60,7 +70,7 @@ export default function PropertyPage() {
     );
   }
 
-  if (!property) {
+  if (!property || !listingView) {
     return (
       <SiteShell>
         <div className="mx-auto max-w-3xl px-4 py-16 text-center">
@@ -80,13 +90,7 @@ export default function PropertyPage() {
   const amenities = showAllAmenities
     ? property.amenities
     : property.amenities.slice(0, 4);
-  const phone = property.owner.phone;
-  const email = property.contactEmail || property.owner.email;
-  const whatsapp = property.whatsappNumber || phone.replace(/\D/g, "");
-  const ownerName =
-    `${property.owner.firstName} ${property.owner.lastName}`.trim() ||
-    property.owner.companyName ||
-    "Agent";
+  const { contact, compliance, isRedacted } = listingView;
 
   return (
     <SiteShell>
@@ -98,6 +102,12 @@ export default function PropertyPage() {
         >
           ← Back
         </button>
+
+        <PropertyPrivacyBanner
+          mode={listingView.mode === "public" ? "public" : listingView.mode === "full" ? "full" : "owner"}
+          redactedFields={listingView.redactedFields}
+          className="mb-4"
+        />
 
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -202,24 +212,30 @@ export default function PropertyPage() {
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <div>
                   <dt className="text-gray-500">Government verification</dt>
-                  <dd className="font-medium capitalize text-black">{property.verification}</dd>
+                  <dd className="font-medium capitalize text-black">{compliance.verification}</dd>
                 </div>
                 <div>
                   <dt className="text-gray-500">Operating license</dt>
                   <dd className="font-medium text-black">
-                    {property.licensed
-                      ? property.licenseNo || "Licensed"
+                    {compliance.licensed
+                      ? compliance.licenseDetail || "Licensed"
                       : "Not licensed / not confirmed"}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-gray-500">Registry registration</dt>
                   <dd className="font-medium text-black">
-                    {property.registered
-                      ? property.registrationNo || "Registered"
+                    {compliance.registered
+                      ? compliance.registrationDetail || "Registered"
                       : "Not registered / not confirmed"}
                   </dd>
                 </div>
+                {isRedacted ? (
+                  <div className="sm:col-span-2 text-xs text-slate-500">
+                    License and registration numbers are only visible to the listing owner, admin,
+                    and government.
+                  </div>
+                ) : null}
                 {property.live ? (
                   <div>
                     <dt className="text-gray-500">Data source</dt>
@@ -262,37 +278,57 @@ export default function PropertyPage() {
 
             <div className="mt-5 flex items-center gap-3 border-t border-gray-100 pt-5">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1e3a5f] text-sm font-bold text-white">
-                {ownerName.charAt(0)}
+                {contact.name.charAt(0)}
               </div>
               <div>
-                <p className="text-sm font-semibold text-black">{ownerName}</p>
-                <p className="text-xs text-gray-500">
-                  {property.owner.companyName || "Listed agent"}
-                </p>
+                <p className="text-sm font-semibold text-black">{contact.name}</p>
+                <p className="text-xs text-gray-500">{contact.companyLabel}</p>
               </div>
             </div>
 
             <div className="mt-5 flex flex-col gap-2">
-              <a
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="rounded-lg bg-[#1e3a5f] px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#152a45]"
-              >
-                Call agent
-              </a>
-              <a
-                href={`mailto:${email}?subject=${encodeURIComponent(property.title)}&body=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
-                className="rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50"
-              >
-                Email agent
-              </a>
-              <a
-                href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border border-green-600 px-4 py-2.5 text-center text-sm font-medium text-green-700 transition-colors hover:bg-green-50"
-              >
-                Chat on WhatsApp
-              </a>
+              {contact.showContactActions && contact.phone && contact.email ? (
+                <>
+                  <a
+                    href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                    className="rounded-lg bg-[#1e3a5f] px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#152a45]"
+                  >
+                    Call agent
+                  </a>
+                  <a
+                    href={`mailto:${contact.email}?subject=${encodeURIComponent(property.title)}&body=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
+                    className="rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50"
+                  >
+                    Email agent
+                  </a>
+                  {contact.whatsapp ? (
+                    <a
+                      href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(`Hi, I'm interested in ${property.title}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-lg border border-green-600 px-4 py-2.5 text-center text-sm font-medium text-green-700 transition-colors hover:bg-green-50"
+                    >
+                      Chat on WhatsApp
+                    </a>
+                  ) : null}
+                </>
+              ) : (
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm text-slate-600">
+                  {contact.phone ? (
+                    <p className="font-medium text-slate-800">{contact.phone}</p>
+                  ) : null}
+                  <p className="mt-1">
+                    Direct contact details are protected. Sign in as the listing owner, or use an
+                    admin / government account for full access.
+                  </p>
+                  <Link
+                    href="/login"
+                    className="mt-2 inline-block text-sm font-medium text-[#1e3a5f] hover:underline"
+                  >
+                    Sign in
+                  </Link>
+                </div>
+              )}
             </div>
 
             <Link

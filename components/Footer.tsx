@@ -5,22 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { BRAND_NAME } from "@/lib/data";
+import { MOBILE_TAB_NAV } from "@/lib/site-nav";
 
 export function MobileNav() {
   const pathname = usePathname();
 
-  const items = [
-    { href: "/", label: "Home", icon: "⌂", useImage: false },
-    { href: "/shortlet", label: "Stay", icon: "🏠", useImage: false },
-    { href: "/hotels", label: "Hotels", icon: "🏨", useImage: false },
-    { href: "/search", label: "Search", icon: "", useImage: true, imageSrc: "/Search-icon.png" },
-  ];
-
   return (
     <nav className="safe-area-inset-bottom fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 py-1.5 shadow-lg backdrop-blur sm:px-4 sm:py-2 lg:hidden">
       <div className="mx-auto grid max-w-7xl grid-cols-4 gap-0.5 sm:gap-1">
-        {items.map((item) => {
-          const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+        {MOBILE_TAB_NAV.map((item) => {
+          const active =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}
@@ -29,20 +25,7 @@ export function MobileNav() {
                 active ? "bg-[#1e3a5f]/10 text-[#1e3a5f]" : "text-slate-600 hover:bg-slate-50 active:bg-slate-100"
               }`}
             >
-              {item.useImage ? (
-                <div className="relative h-5 w-5 sm:h-6 sm:w-6">
-                  <Image
-                    alt={item.label}
-                    fill
-                    sizes="24px"
-                    className={`object-contain ${active ? "" : "opacity-70 brightness-0"}`}
-                    src={item.imageSrc!}
-                    style={active ? undefined : { filter: "brightness(0)" }}
-                  />
-                </div>
-              ) : (
-                <span className="text-xl sm:text-2xl">{item.icon}</span>
-              )}
+              <span className="text-xl sm:text-2xl">{item.icon}</span>
               <span
                 className={`text-[10px] font-semibold sm:text-xs ${
                   active ? "text-[#1e3a5f]" : "text-slate-600"
@@ -75,7 +58,8 @@ export function Newsletter() {
           </div>
           <div className="relative z-10 flex flex-col items-center justify-center px-4 py-12 text-center sm:px-6 sm:py-16 lg:px-8">
             <h2 className="mb-6 text-lg font-bold leading-tight text-white sm:mb-8 sm:text-xl md:text-2xl lg:text-4xl">
-              Get the latest shortlets, rentals, and sales deals sent directly to your inbox every week
+              Get USSAP updates on digital addressing, sector registries, and spatial intelligence —
+              delivered to your inbox every week
             </h2>
             <form
               onSubmit={(e) => {

@@ -2,10 +2,23 @@
 
 import Link from "next/link";
 import { formatCode } from "@/lib/ussap/geocode";
-import type { UssapSite } from "@/lib/ussap/types";
+import {
+  approximateCoordinate,
+  getResidentialAccessMode,
+  type PrivacyViewer,
+} from "@/lib/ussap/property-privacy";
+import type { ResidentialSite, UssapSite } from "@/lib/ussap/types";
 import { SECTOR_COLOR } from "./UssapMap";
 
-export function SiteCard({ site }: { site: UssapSite }) {
+export function SiteCard({ site, viewer }: { site: UssapSite; viewer?: PrivacyViewer }) {
+  const isResidential = site.sector === "residential";
+  const mode = isResidential
+    ? getResidentialAccessMode(site as ResidentialSite, viewer ?? null)
+    : "public";
+  const isRedacted = site.sector === "residential" && mode === "public";
+  const lat = isRedacted ? approximateCoordinate(site.lat) : site.lat;
+  const lng = isRedacted ? approximateCoordinate(site.lng) : site.lng;
+
   return (
     <Link
       href={`/ussap/address/${encodeURIComponent(site.code)}`}
@@ -26,10 +39,12 @@ export function SiteCard({ site }: { site: UssapSite }) {
         </span>
       </div>
       <p className="mt-2 text-xs text-slate-600">
-        {site.city}, {site.state} · {site.lat.toFixed(5)}, {site.lng.toFixed(5)}
+        {site.city}, {site.state}
+        {isRedacted ? " · approx. area" : ` · ${lat.toFixed(5)}, ${lng.toFixed(5)}`}
       </p>
       <p className="mt-1 text-[11px] capitalize text-slate-500">
-        {site.verification} · {site.sensitivity}
+        {site.verification}
+        {!isRedacted ? ` · ${site.sensitivity}` : " · privacy protected"}
       </p>
     </Link>
   );

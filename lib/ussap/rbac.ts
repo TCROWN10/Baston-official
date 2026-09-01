@@ -21,13 +21,27 @@ const SENSITIVITY_CLEARANCE: Record<UssapRole, Sensitivity[]> = {
   field_agent: ["public", "restricted"],
 };
 
-export function canAccessSector(role: UssapRole, sector: SectorKind): boolean {
-  const allowed = ROLE_SECTORS[role];
+/** Marketplace roles (agent/company/guest) are not USSAP RBAC roles — treat as public-only. */
+const PUBLIC_SECTORS: SectorKind[] = ["school", "residential", "traffic"];
+
+export function canAccessSector(
+  role: UssapRole | string | null | undefined,
+  sector: SectorKind,
+): boolean {
+  if (!role) return false;
+  const allowed = ROLE_SECTORS[role as UssapRole];
+  if (!allowed) return PUBLIC_SECTORS.includes(sector);
   return allowed === "*" || allowed.includes(sector);
 }
 
-export function canViewSensitivity(role: UssapRole, sensitivity: Sensitivity): boolean {
-  return SENSITIVITY_CLEARANCE[role].includes(sensitivity);
+export function canViewSensitivity(
+  role: UssapRole | string | null | undefined,
+  sensitivity: Sensitivity,
+): boolean {
+  if (!role) return sensitivity === "public";
+  const clearance = SENSITIVITY_CLEARANCE[role as UssapRole];
+  if (!clearance) return sensitivity === "public";
+  return clearance.includes(sensitivity);
 }
 
 export function canEditSector(role: UssapRole, sector: SectorKind): boolean {

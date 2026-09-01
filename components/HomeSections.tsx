@@ -102,11 +102,11 @@ export function PropertyTypeCarousel() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 sm:mb-8">
           <h2 className="mb-2 text-xl font-bold text-black sm:mb-3 sm:text-2xl lg:text-3xl">
-            Browse by <span className="text-[#3d7ea6]">Property Type</span>
+            Explore USSAP <span className="text-[#3d7ea6]">Sectors</span>
           </h2>
           <p className="text-sm text-gray-600 sm:text-base lg:max-w-2xl">
-            Discover our top selected properties handpicked for their prime locations, exceptional
-            value and standout feature.
+            From education and health to billboards, telecom, and digital addressing — discover how
+            USSAP maps, verifies, and connects Nigeria&apos;s critical infrastructure.
           </p>
         </div>
         <div className="relative">
@@ -169,11 +169,11 @@ export function BlogCarousel() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 sm:mb-8">
           <h2 className="mb-2 text-xl font-bold text-black sm:mb-3 sm:text-2xl lg:text-3xl">
-            Latest News Directly From Our <span className="text-[#3d7ea6]">Blog</span>
+            USSAP Insights From Our <span className="text-[#3d7ea6]">Blog</span>
           </h2>
           <p className="text-sm text-gray-600 sm:text-base lg:max-w-2xl">
-            Be in the know and up-to-date when we publish news, market insights and portfolio progress
-            updates.
+            Stay informed on digital addressing, sector registry updates, field data collection, and
+            how USSAP is mapping Nigeria&apos;s critical infrastructure.
           </p>
         </div>
         <div className="relative">

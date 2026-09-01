@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { UserAvatarMenu } from "@/components/UserAvatarMenu";
 import { BRAND_NAME } from "@/lib/data";
 import { useAuth } from "@/lib/auth";
-import { navActive, PROPERTIES_NAV, SECTOR_NAV } from "@/lib/site-nav";
+import { navActive, DESKTOP_NAV, MOBILE_MARKETPLACE_NAV, MOBILE_USSAP_NAV, TABLET_CHIP_NAV } from "@/lib/site-nav";
 import { dashboardPath } from "@/lib/ussap/rbac";
 import type { UssapRole } from "@/lib/ussap/types";
 
@@ -19,7 +20,7 @@ function HomeIcon({ className }: { className?: string }) {
 
 export function Header() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -53,62 +54,52 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-1 xl:flex">
-          {PROPERTIES_NAV.filter((item) => item.href !== "/hotels").map((item) => (
+          {DESKTOP_NAV.map((item) => (
             <Link key={item.href} href={item.href} className={linkClass(item.href)}>
               {item.label}
             </Link>
           ))}
-          <Link href="/#blog" className={linkClass("/#blog")}>
-            Blog
-          </Link>
         </nav>
 
-        <div className="hidden items-center lg:flex" role="group" aria-label="Sign in or sign up">
-          {user ? (
-            <div className="flex items-center gap-3">
-              <Link href={dashHref} className="text-sm font-medium text-slate-700 hover:text-[#1e3a5f]">
-                {user.fullName.split(" ")[0]}
-              </Link>
-              <button
-                type="button"
-                onClick={logout}
-                className="cursor-pointer rounded-md border border-black px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-slate-50"
-              >
-                Log out
-              </button>
-            </div>
-          ) : (
-            <div className="flex overflow-hidden rounded-md border border-black shadow-sm">
-              <Link
-                className="cursor-pointer bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-slate-50"
-                href="/login"
-              >
-                Sign in
-              </Link>
-              <span className="w-px shrink-0 self-stretch bg-black/15" aria-hidden="true" />
-              <Link
-                className="cursor-pointer bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#152a45]"
-                href="/signup"
-              >
-                Sign up
-              </Link>
-            </div>
-          )}
-        </div>
+        <div className="flex items-center gap-2">
+          <div className="hidden items-center lg:flex" role="group" aria-label="Account">
+            {user ? (
+              <UserAvatarMenu />
+            ) : (
+              <div className="flex overflow-hidden rounded-md border border-black shadow-sm">
+                <Link
+                  className="cursor-pointer bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-slate-50"
+                  href="/login"
+                >
+                  Sign in
+                </Link>
+                <span className="w-px shrink-0 self-stretch bg-black/15" aria-hidden="true" />
+                <Link
+                  className="cursor-pointer bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#152a45]"
+                  href="/signup"
+                >
+                  Sign up
+                </Link>
+              </div>
+            )}
+          </div>
 
-        <button
-          aria-label="Menu"
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-slate-700 hover:bg-slate-50 xl:hidden"
-        >
-          <span className="text-xl font-semibold">{open ? "✕" : "☰"}</span>
-        </button>
+          {user ? <UserAvatarMenu size="sm" className="lg:hidden" /> : null}
+
+          <button
+            aria-label="Menu"
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-slate-700 hover:bg-slate-50 xl:hidden"
+          >
+            <span className="text-xl font-semibold">{open ? "✕" : "☰"}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Tablet chip strip when desktop nav is hidden */}
+      {/* Tablet chip strip — USSAP sectors + hotels/stays */}
       <div className="scrollbar-hide hidden gap-1 overflow-x-auto border-t border-gray-100 px-3 py-2 md:flex xl:hidden">
-        {PROPERTIES_NAV.map((item) => (
+        {TABLET_CHIP_NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -121,59 +112,40 @@ export function Header() {
             {item.label}
           </Link>
         ))}
-        <Link
-          href="/ussap/map"
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
-            navActive(pathname, "/ussap/map")
-              ? "bg-[#1e3a5f] text-white"
-              : "bg-slate-100 text-slate-700"
-          }`}
-        >
-          Map
-        </Link>
       </div>
 
       {open ? (
         <div className="max-h-[min(80vh,640px)] overflow-y-auto border-t border-gray-200 bg-white px-3 py-4 sm:px-6 xl:hidden">
           <div className="flex flex-col gap-1">
-            <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-              Properties & hotels
-            </p>
             <Link href="/" className={linkClass("/")}>
               Home
             </Link>
-            {PROPERTIES_NAV.map((item) => (
+            <p className="mt-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+              USSAP platform
+            </p>
+            {MOBILE_USSAP_NAV.map((item) => (
+              <Link key={item.href} href={item.href} className={linkClass(item.href)}>
+                {item.label}
+              </Link>
+            ))}
+            <p className="mt-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+              Marketplace & hospitality
+            </p>
+            {MOBILE_MARKETPLACE_NAV.map((item) => (
               <Link key={item.href} href={item.href} className={linkClass(item.href)}>
                 {item.label}
               </Link>
             ))}
             <Link href="/search" className={linkClass("/search")}>
-              Search
+              Search listings
             </Link>
             <Link href="/saved" className={linkClass("/saved")}>
-              Saved
+              Saved listings
             </Link>
-            <p className="mt-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-              USSAP
-            </p>
-            {SECTOR_NAV.map((item) => (
-              <Link key={item.href} href={item.href} className={linkClass(item.href)}>
-                {item.label}
-              </Link>
-            ))}
             {user ? (
-              <>
-                <Link href={dashHref} className={linkClass(dashHref)}>
-                  Dashboard
-                </Link>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-black hover:bg-[#1e3a5f]/5"
-                >
-                  Log out
-                </button>
-              </>
+              <Link href={dashHref} className={linkClass(dashHref)}>
+                Dashboard
+              </Link>
             ) : (
               <div className="mt-2 grid grid-cols-2 gap-2 px-1">
                 <Link

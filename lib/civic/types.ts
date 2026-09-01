@@ -32,11 +32,36 @@ export interface HotelRecord extends DirectoryPlace {
 }
 
 export interface SchoolRecord extends DirectoryPlace {
-  level: string;
+  level: "Primary" | "Secondary" | "Tertiary" | "Vocational" | string;
   ownership: "Public" | "Private";
   moeNumber: string;
   students: number;
+  teachers?: number;
+  establishedYear?: number;
+  lga?: string;
+  setting?: "Urban" | "Rural";
+  registered?: boolean;
   advertising: false;
+}
+
+export interface HealthRecord extends DirectoryPlace {
+  facilityType:
+    | "General Hospital"
+    | "Tertiary Hospital"
+    | "Private Hospital"
+    | "Rural Health Centre"
+    | "Community Health Centre"
+    | "Clinic"
+    | "Specialist";
+  ownership: "Government" | "Private" | "Mission";
+  tier: "Primary" | "Secondary" | "Tertiary";
+  beds: number;
+  doctors?: number;
+  nurses?: number;
+  establishedYear?: number;
+  lga?: string;
+  setting?: "Urban" | "Rural";
+  registered?: boolean;
 }
 
 export interface CompanyRecord extends DirectoryPlace {
@@ -93,12 +118,19 @@ export interface BillboardRecord {
   location: string;
   state: string;
   city: string;
+  lga?: string;
   operator: string;
   permitNo: string;
   permitExpiry: string;
   taxPaid: number;
   taxOwed: number;
   verification: VerificationStatus;
+  /** Real outdoor advertising photo */
+  image?: string;
+  boardType?: "static" | "digital" | "unipole" | "rooftop" | "wallscape";
+  sizeLabel?: string;
+  lat?: number;
+  lon?: number;
 }
 
 export interface MarketRecord {

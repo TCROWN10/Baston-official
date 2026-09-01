@@ -3,31 +3,38 @@
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { SiteShell } from "@/components/Footer";
-import { HeroSearch, emptyFilters } from "@/components/HeroSearch";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { ListingsSection } from "@/components/ListingsSection";
 import {
   BlogCarousel,
   LocationGrid,
   PropertyTypeCarousel,
 } from "@/components/HomeSections";
+import { BastionServicesSection } from "@/components/ussap/BastionServicesSection";
+import { SectorModulesHub } from "@/components/ussap/SectorModulesHub";
 import { SiteCard } from "@/components/ussap/SiteCard";
 import { BRAND, allSites } from "@/lib/ussap/data";
 import { encodeGrid } from "@/lib/ussap/geocode";
 import { ROLE_DEFINITIONS } from "@/lib/ussap/rbac";
 import { SECTOR_NAV } from "@/lib/site-nav";
 import type { SearchFilters, SearchTab } from "@/lib/types";
+import { emptyFilters } from "@/components/HeroSearch";
 
 const sample = encodeGrid(6.5244, 3.3792, 8);
 
 const SECTOR_COPY: Record<string, string> = {
-  "/ussap/telecom":
-    "Tag towers, log equipment specs, and track maintenance routes with digital addresses.",
+  "/ussap/map":
+    "Cellular towers, BTS sites, and fibre nodes with uptime and maintenance tracking.",
   "/ussap/projects":
     "Geo-tagged photo/video uploads linked to a site address for progress verification.",
   "/ussap/traffic":
     "Cameras, congestion hot-spots, and accident zones with real-time status tags.",
   "/ussap/schools":
-    "Verified school location profiles for logistics, emergency routing, and mapping.",
+    "Registered vs. non-registered schools by tier, setting, and infrastructure audits.",
+  "/ussap/health":
+    "Hospital hierarchy from tertiary centres to RHCs with resource and equipment audits.",
+  "/ussap/billboards":
+    "Geo-tagged outdoor signage with permit compliance and revenue enforcement.",
   "/ussap/residential":
     "Shareable cloud addresses for deliveries, utilities, and navigation.",
   "/ussap/field":
@@ -57,7 +64,7 @@ export default function HomePage() {
 
   return (
     <SiteShell>
-      <HeroSearch
+      <HeroCarousel
         searchTab={searchTab}
         onSearchTabChange={setSearchTab}
         onFiltersChange={onFiltersChange}
@@ -67,6 +74,10 @@ export default function HomePage() {
       <section id="listings" ref={listingsRef} className="scroll-mt-20">
         <ListingsSection listingTab={searchTab} searchFilters={searchFilters} />
       </section>
+
+      <SectorModulesHub />
+
+      <BastionServicesSection />
 
       <section className="bg-slate-50 px-4 py-12 sm:px-6 sm:py-16 lg:px-10">
         <div className="mx-auto max-w-7xl">

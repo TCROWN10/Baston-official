@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { GovShell } from "@/components/civic/GovShell";
 import { StatusBadge, naira } from "@/components/civic/StatusBadge";
 import { COMPANIES, HOTELS, SCHOOLS } from "@/lib/civic/directory";
@@ -36,6 +37,23 @@ export default function GovernmentHomePage() {
           </div>
         ))}
       </div>
+      <div className="mt-8 rounded-2xl bg-white p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-semibold text-black">Registered accounts</h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Track every USSAP user — location, role, and linked properties.
+            </p>
+          </div>
+          <Link
+            href="/government/accounts"
+            className="rounded-lg bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#152a45]"
+          >
+            View all accounts →
+          </Link>
+        </div>
+      </div>
+
       <div className="mt-8 rounded-2xl bg-white p-5 shadow-sm">
         <h2 className="font-semibold text-black">Attention queue</h2>
         <ul className="mt-4 divide-y divide-gray-100 text-sm">

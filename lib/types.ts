@@ -104,9 +104,12 @@ export interface User {
   email: string;
   fullName: string;
   phone?: string;
+  state?: string;
+  lga?: string;
   role: UserRole;
   companyName?: string;
   password: string;
+  createdAt?: string;
 }
 
 export interface BlogPost {
