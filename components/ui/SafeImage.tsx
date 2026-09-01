@@ -1,12 +1,20 @@
 "use client";
 
 import Image, { type ImageProps } from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = Omit<ImageProps, "src" | "onError"> & {
   src: string;
   fallbackSrc?: string;
 };
+
+function shouldSkipOptimization(src: string) {
+  return (
+    src.startsWith("/api/") ||
+    src.startsWith("/facilities/") ||
+    src.startsWith("/listings/")
+  );
+}
 
 export function SafeImage({
   src,
@@ -14,15 +22,19 @@ export function SafeImage({
   alt,
   ...props
 }: Props) {
-  const [current, setCurrent] = useState(src || fallbackSrc);
-  const isApiPhoto = typeof current === "string" && current.startsWith("/api/");
+  const resolvedSrc = src || fallbackSrc;
+  const [current, setCurrent] = useState(resolvedSrc);
+
+  useEffect(() => {
+    setCurrent(resolvedSrc);
+  }, [resolvedSrc]);
 
   return (
     <Image
       {...props}
       alt={alt}
       src={current || fallbackSrc}
-      unoptimized={isApiPhoto || props.unoptimized}
+      unoptimized={shouldSkipOptimization(current) || props.unoptimized}
       onError={() => {
         if (current !== fallbackSrc) setCurrent(fallbackSrc);
       }}

@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PropertyCard } from "@/components/PropertyCard";
+import { SectorOfferCard } from "@/components/SectorOfferCard";
 import { filterProperties } from "@/lib/listings";
+import { getSectorOffers } from "@/lib/civic/sector-offers";
 import type { SearchFilters, SearchTab } from "@/lib/types";
 
 export function ListingsSection({
@@ -29,13 +31,18 @@ export function ListingsSection({
     setPage(1);
   }, [listingTab, searchFilters]);
 
+  const sectorOffers = useMemo(() => getSectorOffers(), []);
+
   const filtered = useMemo(() => {
     if (!ready) return [];
     return filterProperties(listingTab, searchFilters);
   }, [listingTab, searchFilters, ready]);
 
-  const pages = Math.ceil(filtered.length / 6) || 1;
-  const slice = filtered.slice((page - 1) * 6, page * 6);
+  const isSectorMix = listingTab === "shortlet";
+  const sectorSlice = sectorOffers.slice((page - 1) * 6, page * 6);
+  const propertySlice = filtered.slice((page - 1) * 6, page * 6);
+  const displayCount = isSectorMix ? sectorOffers.length : filtered.length;
+  const pages = Math.ceil(displayCount / 6) || 1;
 
   useEffect(() => {
     if (page > pages) setPage(Math.max(1, pages));
@@ -49,14 +56,14 @@ export function ListingsSection({
         : "Rental properties";
   const subtitle =
     listingTab === "shortlet"
-      ? "Save up to 34%"
+      ? "Save up to 34% · Hotels, schools, health, telecom & more"
       : listingTab === "buy"
         ? "Verified homes for sale"
         : "Verified rentals";
 
   const emptyMessage =
     listingTab === "shortlet"
-      ? "No shortlets match your filters. Try adjusting location, property type, or price."
+      ? "No sector highlights available right now."
       : listingTab === "buy"
         ? "No properties for sale match your filters. Try adjusting location, property type, or price."
         : "No rentals match your filters. Try adjusting location, property type, or price.";
@@ -75,24 +82,24 @@ export function ListingsSection({
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-[#1e3a5f]" />
-              <p className="mt-4 text-gray-600">Loading properties...</p>
+              <p className="mt-4 text-gray-600">
+                {isSectorMix ? "Loading sector highlights..." : "Loading properties..."}
+              </p>
             </div>
           </div>
-        ) : slice.length > 0 ? (
+        ) : (isSectorMix ? sectorSlice.length : propertySlice.length) > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {slice.map((property) => (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                variant={listingTab === "shortlet" ? "shortlet" : "sale"}
-              />
-            ))}
+            {isSectorMix
+              ? sectorSlice.map((offer) => <SectorOfferCard key={offer.id} offer={offer} />)
+              : propertySlice.map((property) => (
+                  <PropertyCard key={property.id} property={property} variant="sale" />
+                ))}
           </div>
         ) : (
           <p className="py-12 text-center text-gray-600">{emptyMessage}</p>
         )}
 
-        {!loading && filtered.length > 0 ? (
+        {!loading && displayCount > 0 ? (
           <div className="mt-8 flex items-center justify-center gap-2">
             <button
               onClick={() => setPage((p) => p - 1)}

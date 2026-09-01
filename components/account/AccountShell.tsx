@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { UserAvatarMenu } from "@/components/UserAvatarMenu";
+import { NavIconGlyph } from "@/components/icons/NavIcons";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { useAuth } from "@/lib/auth";
 import { BRAND } from "@/lib/ussap/data";
@@ -79,9 +80,7 @@ export function AccountShell({ children, requireAuth = true, wide = false }: Pro
         href={dashHref}
         className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
       >
-        <span aria-hidden className="w-5 text-center text-xs">
-          ⌂
-        </span>
+        <NavIconGlyph icon="dashboard" />
         Dashboard
       </Link>
       <Link

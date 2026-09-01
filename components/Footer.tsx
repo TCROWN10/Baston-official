@@ -4,19 +4,42 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
+import { HomeNavIcon, NavIconGlyph } from "@/components/icons/NavIcons";
 import { BRAND_NAME } from "@/lib/data";
+import { useAuth } from "@/lib/auth";
 import { MOBILE_TAB_NAV } from "@/lib/site-nav";
+import { dashboardPath } from "@/lib/ussap/rbac";
+import type { UssapRole } from "@/lib/ussap/types";
 
 export function MobileNav() {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const dashHref = user ? dashboardPath(user.role as UssapRole) : "/dashboard";
+
+  const tabs = user
+    ? [
+        { href: "/", label: "Home", icon: "home" as const },
+        { href: dashHref, label: "Dashboard", icon: "dashboard" as const },
+        { href: "/ussap/schools", label: "Education", icon: "🎓" as const },
+        { href: "/ussap/health", label: "Health", icon: "🏥" as const },
+        { href: "/hotels", label: "Hotels", icon: "🏨" as const },
+      ]
+    : MOBILE_TAB_NAV.map((item) =>
+        item.href === "/" ? { ...item, icon: "home" as const } : item,
+      );
 
   return (
     <nav className="safe-area-inset-bottom fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 py-1.5 shadow-lg backdrop-blur sm:px-4 sm:py-2 lg:hidden">
-      <div className="mx-auto grid max-w-7xl grid-cols-4 gap-0.5 sm:gap-1">
-        {MOBILE_TAB_NAV.map((item) => {
+      <div
+        className={`mx-auto grid max-w-7xl gap-0.5 sm:gap-1 ${
+          tabs.length === 5 ? "grid-cols-5" : "grid-cols-4"
+        }`}
+      >
+        {tabs.map((item) => {
           const active =
             pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href));
+            (item.href !== "/" && pathname.startsWith(item.href)) ||
+            (item.icon === "dashboard" && pathname.startsWith("/dashboard"));
           return (
             <Link
               key={item.href}
@@ -25,7 +48,13 @@ export function MobileNav() {
                 active ? "bg-[#1e3a5f]/10 text-[#1e3a5f]" : "text-slate-600 hover:bg-slate-50 active:bg-slate-100"
               }`}
             >
-              <span className="text-xl sm:text-2xl">{item.icon}</span>
+              {item.icon === "home" ? (
+                <HomeNavIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+              ) : item.icon === "dashboard" ? (
+                <NavIconGlyph icon="dashboard" className="h-5 w-5 sm:h-6 sm:w-6" />
+              ) : (
+                <span className="text-xl sm:text-2xl">{item.icon}</span>
+              )}
               <span
                 className={`text-[10px] font-semibold sm:text-xs ${
                   active ? "text-[#1e3a5f]" : "text-slate-600"

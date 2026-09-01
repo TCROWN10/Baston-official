@@ -1,4 +1,11 @@
 /** Verified addresses, coordinates, and images for named institutions. */
+import {
+  ekitiBillboardOverride,
+  ekitiHealthOverride,
+  ekitiHotelOverride,
+  ekitiSchoolOverride,
+} from "./ekiti-overrides";
+
 export type FacilityOverride = {
   address?: string;
   city?: string;
@@ -111,11 +118,19 @@ const SCHOOLS: Record<string, FacilityOverride> = {
 };
 
 export function healthOverride(id: string): FacilityOverride | undefined {
-  return HEALTH[id];
+  return HEALTH[id] ?? ekitiHealthOverride(id);
 }
 
 export function schoolOverride(id: string): FacilityOverride | undefined {
-  return SCHOOLS[id];
+  return SCHOOLS[id] ?? ekitiSchoolOverride(id);
+}
+
+export function hotelOverride(id: string): FacilityOverride | undefined {
+  return ekitiHotelOverride(id);
+}
+
+export function billboardOverride(id: string): FacilityOverride | undefined {
+  return ekitiBillboardOverride(id);
 }
 
 export function applyOverride<T extends { address: string; city?: string; lga?: string; lat?: number; lon?: number; images?: string[] }>(

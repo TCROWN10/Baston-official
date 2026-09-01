@@ -1,4 +1,6 @@
 import { COMPANIES, HOTELS } from "./directory";
+import ekitiSectors from "./ekiti-sectors.json";
+import { billboardOverride } from "./facility-overrides";
 import type {
   BillboardRecord,
   CctvCamera,
@@ -231,6 +233,7 @@ export const CCTV_CAMERAS: CctvCamera[] = [
   { id: "cam-13", name: "Transcorp Hilton Forecourt", operator: "Transcorp Hilton Abuja", state: "FCT", city: "Maitama", lat: 9.0765, lon: 7.4951, type: "organization", online: true },
   { id: "cam-14", name: "Balogun Market Perimeter", operator: "Lagos Markets Board", state: "Lagos", city: "Lagos Island", lat: 6.455, lon: 3.389, type: "market", online: true },
   { id: "cam-15", name: "Onitsha Main Market Gate", operator: "Anambra Markets Authority", state: "Anambra", city: "Onitsha", lat: 6.145, lon: 6.787, type: "market", online: false },
+  { id: "cam-16", name: "Fajuyi Roundabout Ado-Ekiti", operator: "Ekiti State Traffic Management", state: "Ekiti", city: "Ado Ekiti", lat: 7.6218, lon: 5.2194, type: "traffic", online: true },
 ];
 
 export const BILLBOARDS: BillboardRecord[] = [
@@ -504,6 +507,18 @@ export const BILLBOARDS: BillboardRecord[] = [
     lon: 3.351,
     image: "/facilities/billboards/digital-style-billboard.jpg",
   },
+  ...(ekitiSectors.billboards as BillboardRecord[]).map((b) => {
+    const o = billboardOverride(b.id);
+    return {
+      ...b,
+      location: o?.address?.split(",")[0] ?? b.location,
+      city: o?.city ?? b.city,
+      lga: o?.lga ?? b.lga,
+      lat: o?.lat ?? b.lat,
+      lon: o?.lon ?? b.lon,
+      image: o?.image ?? b.image,
+    };
+  }),
 ];
 
 export const MARKETS: MarketRecord[] = [
@@ -515,6 +530,7 @@ export const MARKETS: MarketRecord[] = [
   { id: "mkt-6", name: "Mile 1 Market", state: "Rivers", city: "Port Harcourt", stalls: 1600, levyPaid: 19000000, levyOwed: 2200000, verification: "pending", hasCctv: true },
   { id: "mkt-7", name: "Bodija Market", state: "Oyo", city: "Ibadan", stalls: 2200, levyPaid: 17000000, levyOwed: 0, verification: "verified", hasCctv: false },
   { id: "mkt-8", name: "Aba Ariaria Market", state: "Abia", city: "Aba", stalls: 5400, levyPaid: 92000000, levyOwed: 18000000, verification: "flagged", hasCctv: false },
+  { id: "mkt-9", name: "Oja Oba Market", state: "Ekiti", city: "Ado Ekiti", stalls: 1400, levyPaid: 9800000, levyOwed: 420000, verification: "verified", hasCctv: true },
 ];
 
 export const PROJECTS: ProjectRecord[] = [
@@ -524,6 +540,7 @@ export const PROJECTS: ProjectRecord[] = [
   { id: "prj-4", title: "Port Harcourt market lighting & CCTV", ministry: "Rivers Ministry of Commerce", state: "Rivers", budget: 1800000000, spent: 1760000000, progress: 97, status: "completed", contractor: "Garden City Electrics" },
   { id: "prj-5", title: "National hotel verification digitisation", ministry: "Tourism Board / NTDC", state: "FCT", budget: 2400000000, spent: 980000000, progress: 41, status: "on-track", contractor: "My App Civic Systems" },
   { id: "prj-6", title: "Ibadan signage & billboard audit", ministry: "Oyo Signage Agency", state: "Oyo", budget: 640000000, spent: 210000000, progress: 22, status: "flagged", contractor: "OYSG Internal / Admax" },
+  { id: "prj-7", title: "Ekiti rural PHC electrification & cold chain", ministry: "Ekiti Ministry of Health", state: "Ekiti", budget: 1200000000, spent: 480000000, progress: 38, status: "on-track", contractor: "Ekiti Rural Health Partners" },
 ];
 
 export function taxLedger(): TaxLedgerRow[] {

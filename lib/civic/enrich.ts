@@ -1,4 +1,5 @@
 import { SCHOOLS } from "./directory";
+import ekitiSectors from "./ekiti-sectors.json";
 import {
   applyOverride,
   healthOverride,
@@ -15,7 +16,12 @@ import { stableHash, normalizeArea } from "./locations";
 import type { HealthRecord, SchoolRecord } from "./types";
 
 const schoolImages = assignUniqueSchoolImages(
-  SCHOOLS.map((s) => ({ id: s.id, name: s.name, slug: s.slug })),
+  SCHOOLS.map((s) => ({
+    id: s.id,
+    name: s.name,
+    slug: s.slug,
+    existingImage: s.images?.[0],
+  })),
 );
 
 function enrichSchool(s: SchoolRecord): SchoolRecord {
@@ -390,6 +396,7 @@ const HEALTH_SEED: Omit<HealthRecord, "images" | "live">[] = [
     beds: 350,
     verification: "flagged",
   },
+  ...(ekitiSectors.health as Omit<HealthRecord, "images" | "live">[]),
 ];
 
 const healthImages = assignUniqueHealthImages(

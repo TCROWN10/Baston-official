@@ -46,6 +46,7 @@ export function SchoolFacilityCard({
     >
       <div className="relative h-44 sm:h-48">
         <SafeImage
+          key={school.images[0]}
           src={school.images[0]}
           alt={school.name}
           fill
@@ -66,6 +67,7 @@ export function SchoolFacilityCard({
           registered={school.registered ?? false}
           compact
         />
+        <p className="line-clamp-2 text-sm text-gray-700">{school.address}</p>
         <p className="text-sm text-gray-600">
           {school.lga}, {school.state} · {school.setting}
         </p>
@@ -106,6 +108,7 @@ export function HealthFacilityCard({
     >
       <div className="relative h-44 sm:h-48">
         <SafeImage
+          key={facility.images[0]}
           src={facility.images[0]}
           alt={facility.name}
           fill
@@ -126,6 +129,7 @@ export function HealthFacilityCard({
           registered={facility.registered ?? false}
           compact
         />
+        <p className="line-clamp-2 text-sm text-gray-700">{facility.address}</p>
         <p className="text-sm text-gray-600">
           {facility.lga}, {facility.state} · {facility.setting}
         </p>

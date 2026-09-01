@@ -12,12 +12,30 @@ const SCHOOL_PREFERRED: [RegExp, string][] = [
   [/university of lagos|\bunilag\b/i, "/facilities/schools/unilag-gate.jpg"],
   [/ahmadu bello|\babu\b/i, "/facilities/schools/abu-gate.jpg"],
   [/university of nigeria|\bunn\b|nsukka/i, "/facilities/schools/unn-view.jpg"],
+  [/fiditi grammar/i, "/facilities/schools/southwest/sw-015.jpg"],
+  [/akinmorin grammar/i, "/facilities/schools/southwest/sw-016.jpg"],
+  [/ilora baptist grammar/i, "/facilities/schools/southwest/sw-017.jpg"],
+  [/iseyin district grammar/i, "/facilities/schools/southwest/sw-018.jpg"],
+  [/akure high school/i, "/facilities/schools/southwest/sw-019.jpg"],
+  [/oyemekun grammar/i, "/facilities/schools/southwest/sw-020.jpg"],
+  [/aquinas college akure/i, "/facilities/schools/southwest/sw-021.jpg"],
+  [/baptist grammar school iwo/i, "/facilities/schools/southwest/sw-022.jpg"],
+  [/ipetu-ijesha grammar|ipetu.ijesha grammar/i, "/facilities/schools/southwest/sw-023.jpg"],
+  [/christ's school ado/i, "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg"],
+  [/oye grammar school/i, "/facilities/ekiti/schools/oye-grammar-school.jpg"],
+  [/ayede grammar/i, "/facilities/ekiti/schools/ayede-grammar-school.jpg"],
+  [/ipoti high school|ipoti community/i, "/facilities/ekiti/schools/ipoti-community-high-school.jpg"],
+  [/efon alaaye grammar/i, "/facilities/ekiti/schools/efon-grammar-school.jpg"],
+  [/ijero grammar|doherty memorial/i, "/facilities/ekiti/schools/ijero-grammar-school.jpg"],
 ];
 
 const HEALTH_PREFERRED: [RegExp, string][] = [
   [/university college hospital|\buch\b/i, "/facilities/health/uch-gate.jpg"],
   [/national hospital/i, "/facilities/health/national-abuja.jpg"],
   [/reddington/i, "/facilities/health/reddington-hospital.jpg"],
+  [/eksuth|ekiti state university teaching/i, "/facilities/ekiti/health/eksuth-ado-ekiti.jpg"],
+  [/federal teaching hospital ido/i, "/facilities/ekiti/health/fethi-ido-ekiti.jpg"],
+  [/ikogosi warm springs/i, "/facilities/ekiti/hotels/ikogosi-resort.jpg"],
   [/lagos university teaching|\bluth\b/i, "/facilities/health/luth-surulere.jpg"],
   [/st\.?\s*nicholas/i, "/facilities/health/st-nicholas.jpg"],
   [/eko hospital/i, "/facilities/health/eko-hospital.jpg"],
@@ -49,22 +67,37 @@ let schoolsAssigned = false;
 let healthAssigned = false;
 let hotelsAssigned = false;
 
+function claimSchoolImage(src: string, used: Set<string>): boolean {
+  if (used.has(src)) return false;
+  if (SCHOOL_POOL.includes(src) || src.includes("/facilities/schools/southwest/") || src.includes("/facilities/ekiti/")) {
+    used.add(src);
+    return true;
+  }
+  return false;
+}
+
 /**
  * Assign every school a distinct image. Preferred named matches claim first;
  * remaining ids receive the next unused pool photo in stable id order.
  */
 export function assignUniqueSchoolImages(
-  items: { id: string; name: string; slug: string }[],
+  items: { id: string; name: string; slug: string; existingImage?: string }[],
 ): Map<string, string> {
   if (schoolsAssigned && schoolCache.size === items.length) return schoolCache;
   schoolUsed.clear();
   schoolCache.clear();
 
   for (const item of items) {
+    if (item.existingImage && claimSchoolImage(item.existingImage, schoolUsed)) {
+      schoolCache.set(item.id, item.existingImage);
+    }
+  }
+
+  for (const item of items) {
+    if (schoolCache.has(item.id)) continue;
     for (const [pattern, src] of SCHOOL_PREFERRED) {
       if (pattern.test(item.name) || pattern.test(item.slug)) {
-        if (!schoolUsed.has(src) && SCHOOL_POOL.includes(src)) {
-          schoolUsed.add(src);
+        if (claimSchoolImage(src, schoolUsed)) {
           schoolCache.set(item.id, src);
         }
         break;

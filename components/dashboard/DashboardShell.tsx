@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { UserAvatarMenu } from "@/components/UserAvatarMenu";
+import { NavIconGlyph } from "@/components/icons/NavIcons";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { BRAND } from "@/lib/ussap/data";
 import type { DashboardUser } from "./types";
@@ -52,7 +53,7 @@ function SidebarNav({
   return (
     <nav className="space-y-1">
       <button type="button" onClick={() => onViewChange("overview")} className={linkClass(activeView === "overview")}>
-        <span aria-hidden className="w-5 text-center text-xs">⌂</span>
+        <NavIconGlyph icon="dashboard" />
         Overview
       </button>
 
@@ -78,7 +79,9 @@ function SidebarNav({
           onClick={() => onViewChange(item.id)}
           className={linkClass(activeView === item.id)}
         >
-          <span aria-hidden className="w-5 text-center text-xs">{item.icon}</span>
+          <span aria-hidden className="flex h-5 w-5 shrink-0 items-center justify-center text-xs">
+          <NavIconGlyph icon={item.icon} />
+        </span>
           {item.label}
         </button>
       ))}

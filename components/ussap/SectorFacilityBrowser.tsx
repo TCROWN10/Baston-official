@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HealthFacilityCard, SchoolFacilityCard } from "@/components/ussap/FacilityCard";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import type { OwnershipFilter } from "@/lib/civic/enrich";
@@ -50,6 +50,11 @@ export function SectorFacilityBrowser(props: Props) {
   const [ownership, setOwnership] = useState<OwnershipFilter>("all");
   const [query, setQuery] = useState("");
   const [showServices, setShowServices] = useState(true);
+
+  useEffect(() => {
+    setSelectedState(initialState);
+    setSelectedArea(initialLga);
+  }, [initialState, initialLga]);
 
   const areas = selectedState ? locationIndex.areasByState[selectedState] || [] : [];
 
@@ -180,7 +185,9 @@ export function SectorFacilityBrowser(props: Props) {
         <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
           <p className="font-medium text-slate-800">No facilities in this area yet</p>
           <p className="mt-1 text-sm text-slate-600">
-            Try another state or LGA, or clear filters to browse all of Nigeria.
+            {selectedState && selectedArea
+              ? `No ${kind === "school" ? "schools" : "health facilities"} in ${selectedArea}, ${selectedState}. Try “All areas” for that state, or pick another LGA.`
+              : "Try another state or LGA, or clear filters to browse all of Nigeria."}
           </p>
         </div>
       ) : (

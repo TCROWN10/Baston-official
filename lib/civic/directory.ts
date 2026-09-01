@@ -1,16 +1,29 @@
 import directory from "./directory.json";
+import ekitiSectors from "./ekiti-sectors.json";
+import southwestRuralSchools from "./southwest-rural-schools.json";
 import { assignUniqueHotelImages } from "./facility-images";
+import { applyOverride, hotelOverride } from "./facility-overrides";
 import type { CompanyRecord, HotelRecord, SchoolRecord } from "./types";
 
-const rawHotels = directory.hotels as HotelRecord[];
+const rawHotels = [
+  ...(directory.hotels as HotelRecord[]),
+  ...(ekitiSectors.hotels as HotelRecord[]),
+];
 const hotelImages = assignUniqueHotelImages(rawHotels.map((h) => ({ id: h.id })));
 
-export const HOTELS: HotelRecord[] = rawHotels.map((h) => ({
-  ...h,
-  images: [hotelImages.get(h.id) ?? h.images?.[0]].filter(Boolean) as string[],
-}));
+export const HOTELS: HotelRecord[] = rawHotels.map((h) => {
+  const withOverride = applyOverride(h, hotelOverride(h.id));
+  const image = withOverride.images?.[0] ?? hotelImages.get(h.id) ?? h.images?.[0];
+  return {
+    ...withOverride,
+    images: image ? [image] : [],
+  };
+});
 
-export const SCHOOLS = directory.schools as SchoolRecord[];
+export const SCHOOLS: SchoolRecord[] = [
+  ...(directory.schools as SchoolRecord[]),
+  ...(southwestRuralSchools as SchoolRecord[]),
+];
 export const COMPANIES = directory.companies as CompanyRecord[];
 
 export function naira(amount: number) {

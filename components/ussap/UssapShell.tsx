@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserAvatarMenu } from "@/components/UserAvatarMenu";
+import { NavIconGlyph } from "@/components/icons/NavIcons";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { useAuth } from "@/lib/auth";
 import { BRAND } from "@/lib/ussap/data";
@@ -62,8 +63,8 @@ function NavLink({
           : "text-white/75 hover:bg-white/10 hover:text-white"
       }`}
     >
-      <span aria-hidden className="w-5 text-center text-xs">
-        {item.icon}
+      <span aria-hidden className="flex h-5 w-5 shrink-0 items-center justify-center">
+        <NavIconGlyph icon={item.icon} />
       </span>
       {item.label}
     </Link>
@@ -93,7 +94,7 @@ function SidebarNav() {
         Workspace
       </p>
       <NavLink
-        item={{ href: "/dashboard", label: "Dashboard", icon: "⌂" }}
+        item={{ href: "/dashboard", label: "Dashboard", icon: "dashboard" }}
         pathname={pathname}
       />
       <NavLink

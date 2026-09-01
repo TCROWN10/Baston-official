@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { SidebarPanelToggleIcon } from "@/components/icons/NavIcons";
 
 type Props = {
   brandHref: string;
@@ -16,33 +17,87 @@ type Props = {
   mainClassName?: string;
 };
 
-function MenuIcon() {
+function SidebarPanel({
+  brandHref,
+  brandTitle,
+  brandSubtitle,
+  nav,
+  footer,
+  navClassName = "",
+}: {
+  brandHref: string;
+  brandTitle: string;
+  brandSubtitle: string;
+  nav: ReactNode;
+  footer?: ReactNode;
+  navClassName?: string;
+}) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 7h16M4 12h16M4 17h16"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+    <>
+      <div className="border-b border-white/10 px-4 py-4 sm:px-5 sm:py-5">
+        <Link href={brandHref} className="text-base font-bold tracking-[0.12em] text-white">
+          {brandTitle}
+        </Link>
+        <p className="mt-1 text-xs text-white/60">{brandSubtitle}</p>
+      </div>
+      <div className={`flex-1 overflow-y-auto px-3 py-3 lg:py-4 ${navClassName}`}>{nav}</div>
+      {footer ? (
+        <div className="shrink-0 border-t border-white/10 px-4 py-4">{footer}</div>
+      ) : null}
+    </>
+  );
+}
+
+function PanelToggleButton({
+  open,
+  onToggle,
+}: {
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={open}
+      aria-controls="app-sidebar-mobile"
+      aria-label={open ? "Close sidebar" : "Open sidebar"}
+      title={open ? "Close sidebar" : "Open sidebar"}
+      className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-[#1e3a5f] transition hover:bg-slate-100"
+    >
+      <SidebarPanelToggleIcon className="h-5 w-5" />
+    </button>
+  );
+}
+
+function SeamToggleIcon({ collapsed }: { collapsed: boolean }) {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+      {collapsed ? (
+        <path
+          d="M1.5 2.5L4.5 5L1.5 7.5M5.5 2.5L8.5 5L5.5 7.5"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <path
+          d="M8.5 2.5L5.5 5L8.5 7.5M4.5 2.5L1.5 5L4.5 7.5"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
     </svg>
   );
 }
 
-function CloseIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M6 6l12 12M18 6L6 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-/** Shared app layout — collapsible sidebar on mobile, always visible on desktop. */
+/**
+ * Mobile & tablet: narrow slide-out drawer (does not cover the whole page).
+ * Desktop: sticky sidebar with seam chevron on the edge.
+ */
 export function AppSidebarLayout({
   brandHref,
   brandTitle,
@@ -56,6 +111,13 @@ export function AppSidebarLayout({
 }: Props) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("ussap-sidebar-collapsed") === "1") {
+      setDesktopCollapsed(true);
+    }
+  }, []);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -70,77 +132,107 @@ export function AppSidebarLayout({
     };
   }, [mobileOpen]);
 
-  const closeMobile = () => setMobileOpen(false);
-  const toggleMobile = () => setMobileOpen((open) => !open);
+  const closeMobile = () => {
+    setMobileOpen(false);
+    localStorage.setItem("ussap-sidebar-mobile-open", "0");
+  };
+
+  const toggleMobile = () => {
+    setMobileOpen((prev) => {
+      const next = !prev;
+      localStorage.setItem("ussap-sidebar-mobile-open", next ? "1" : "0");
+      return next;
+    });
+  };
+
+  const toggleDesktop = () => {
+    setDesktopCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem("ussap-sidebar-collapsed", next ? "1" : "0");
+      return next;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <header className="relative z-[60] flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-        <div className="flex min-w-0 items-center gap-3">
-          <button
-            type="button"
-            onClick={toggleMobile}
-            aria-expanded={mobileOpen}
-            aria-controls="app-sidebar"
-            aria-label={mobileOpen ? "Close sidebar" : "Open sidebar"}
-            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-[#1e3a5f] transition hover:bg-slate-50"
-          >
-            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
-          </button>
-          <Link
-            href={brandHref}
-            className="truncate text-sm font-bold tracking-[0.1em] text-[#1e3a5f]"
-          >
-            {mobileTitle ?? brandTitle}
-          </Link>
-        </div>
+      {/* Mobile + tablet header */}
+      <header className="relative z-[60] flex items-center gap-2 border-b border-slate-200 bg-white px-3 py-3 lg:hidden">
+        <PanelToggleButton open={mobileOpen} onToggle={toggleMobile} />
+        <Link
+          href={brandHref}
+          className="min-w-0 flex-1 truncate text-sm font-bold tracking-[0.1em] text-[#1e3a5f]"
+        >
+          {mobileTitle ?? brandTitle}
+        </Link>
         {headerRight}
       </header>
 
+      {/* Mobile + tablet: dim backdrop + narrow drawer */}
       {mobileOpen ? (
         <button
           type="button"
           aria-label="Close sidebar"
-          className="fixed inset-0 z-40 cursor-default bg-black/40 lg:hidden"
+          className="fixed inset-0 z-[50] bg-black/40 lg:hidden"
           onClick={closeMobile}
         />
       ) : null}
 
-      <div className="mx-auto flex max-w-[1440px] lg:flex-row">
-        <aside
-          id="app-sidebar"
-          className={`fixed inset-y-0 left-0 z-50 flex w-[min(100%,280px)] flex-col bg-[#1e3a5f] shadow-xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-60 lg:translate-x-0 lg:shadow-none ${
-            mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      <aside
+        id="app-sidebar-mobile"
+        aria-hidden={!mobileOpen}
+        className={`fixed left-0 top-0 z-[55] flex h-full w-[min(280px,85vw)] max-w-[280px] flex-col bg-[#1e3a5f] shadow-xl transition-transform duration-200 ease-out lg:hidden ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
+        }`}
+      >
+        <SidebarPanel
+          brandHref={brandHref}
+          brandTitle={brandTitle}
+          brandSubtitle={brandSubtitle}
+          nav={nav}
+          footer={footer}
+        />
+      </aside>
+
+      <div className="mx-auto flex max-w-[1440px] flex-col lg:flex-row">
+        {/* Desktop sidebar */}
+        <div
+          className={`relative hidden shrink-0 overflow-visible transition-[width] duration-200 ease-out lg:block ${
+            desktopCollapsed ? "w-0" : "w-60"
           }`}
         >
-          <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5 sm:py-5">
-            <div className="min-w-0">
-              <Link href={brandHref} className="text-base font-bold tracking-[0.12em] text-white">
-                {brandTitle}
-              </Link>
-              <p className="mt-1 text-xs text-white/60">{brandSubtitle}</p>
-            </div>
-            <button
-              type="button"
-              onClick={closeMobile}
-              aria-label="Close sidebar"
-              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-white/80 transition hover:bg-white/10 lg:hidden"
-            >
-              <CloseIcon />
-            </button>
-          </div>
-
-          <div
-            className="flex-1 overflow-y-auto overscroll-contain px-3 py-3 lg:py-4"
-            onClick={closeMobile}
+          <aside
+            id="app-sidebar"
+            className={`sticky top-0 flex h-screen flex-col overflow-hidden bg-[#1e3a5f] transition-[width] duration-200 ease-out ${
+              desktopCollapsed ? "w-0" : "w-60"
+            }`}
           >
-            {nav}
-          </div>
+            <div
+              className={`flex h-full w-60 flex-col transition-opacity duration-200 ${
+                desktopCollapsed ? "pointer-events-none opacity-0" : "opacity-100"
+              }`}
+            >
+              <SidebarPanel
+                brandHref={brandHref}
+                brandTitle={brandTitle}
+                brandSubtitle={brandSubtitle}
+                nav={nav}
+                footer={footer}
+              />
+            </div>
+          </aside>
 
-          {footer ? (
-            <div className="border-t border-white/10 px-4 py-4 lg:shrink-0">{footer}</div>
-          ) : null}
-        </aside>
+          <button
+            type="button"
+            onClick={toggleDesktop}
+            aria-expanded={!desktopCollapsed}
+            aria-controls="app-sidebar"
+            title={desktopCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="absolute top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-md hover:bg-slate-50"
+            style={{ right: -14 }}
+          >
+            <SeamToggleIcon collapsed={desktopCollapsed} />
+          </button>
+        </div>
 
         <main
           className={`min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8 ${mainClassName}`.trim()}
