@@ -15,16 +15,6 @@ export type HeroSlide = {
 
 export const HERO_SLIDES: HeroSlide[] = [
   {
-    id: "property",
-    label: "Stays",
-    type: "property",
-    image: "/Hero-Image.jpg",
-    imageAlt: "Modern homes and shortlet apartments in Nigeria",
-    title: "Find a place to stay in minutes",
-    description:
-      "Discover verified shortlets, rentals, and homes for sale — powered by USSAP digital addresses across Nigeria.",
-  },
-  {
     id: "education",
     label: "Education",
     type: "sector",
@@ -67,20 +57,6 @@ export const HERO_SLIDES: HeroSlide[] = [
     secondaryHref: "/ussap/sectors/billboards",
   },
   {
-    id: "hospitality",
-    label: "Hotels",
-    type: "sector",
-    image: "/Hotel-image.jpg",
-    imageAlt: "Nigerian hotel and hospitality property",
-    title: "Verify hospitality in minutes",
-    description:
-      "Complete hotel directory by tier and capacity — with hygiene, fire safety, structural compliance, and tourist tax auditing.",
-    ctaLabel: "Browse hotels",
-    ctaHref: "/hotels",
-    secondaryLabel: "Module overview",
-    secondaryHref: "/ussap/sectors/hospitality",
-  },
-  {
     id: "telecom",
     label: "Telecom",
     type: "sector",
@@ -107,6 +83,30 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaHref: "/ussap/field",
     secondaryLabel: "Our services",
     secondaryHref: "/ussap/sectors/core",
+  },
+  {
+    id: "hospitality",
+    label: "Hotels",
+    type: "sector",
+    image: "/Hotel-image.jpg",
+    imageAlt: "Nigerian hotel and hospitality property",
+    title: "Verify hospitality in minutes",
+    description:
+      "Complete hotel directory by tier and capacity — with hygiene, fire safety, structural compliance, and tourist tax auditing.",
+    ctaLabel: "Browse hotels",
+    ctaHref: "/hotels",
+    secondaryLabel: "Module overview",
+    secondaryHref: "/ussap/sectors/hospitality",
+  },
+  {
+    id: "property",
+    label: "Stays",
+    type: "property",
+    image: "/Hero-Image.jpg",
+    imageAlt: "Modern homes and shortlet apartments in Nigeria",
+    title: "Find a place to stay in minutes",
+    description:
+      "Discover verified shortlets, rentals, and homes for sale — powered by USSAP digital addresses across Nigeria.",
   },
 ];
 
