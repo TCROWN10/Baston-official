@@ -92,6 +92,14 @@ export function UserAvatarMenu({ size = "md", align = "right", className = "" }:
           >
             Profile settings
           </Link>
+          <Link
+            role="menuitem"
+            href="/account/trips"
+            onClick={() => setOpen(false)}
+            className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            My trips
+          </Link>
           <button
             type="button"
             role="menuitem"

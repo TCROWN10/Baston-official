@@ -44,7 +44,8 @@ export function DashboardOverview({
     {
       label: "Your location",
       value: user.lga && user.state ? user.lga : user.state || "Not set",
-      hint: user.state ? (user.lga ? user.state : "Add LGA in account") : "Set at signup",
+      hint: user.state ? (user.lga ? user.state : "Add LGA in profile") : "Set in profile settings",
+      action: () => onViewChange("profile"),
     },
     {
       label: "Active listings",

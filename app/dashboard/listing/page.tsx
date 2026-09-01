@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { useAuth } from "@/lib/auth";
-import { BRAND_NAME } from "@/lib/data";
 import { saveUserListing } from "@/lib/listings";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { NIGERIA_STATES } from "@/lib/civic/directory";
@@ -91,16 +90,15 @@ export default function NewListingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <Link href="/dashboard" className="font-bold text-black">
-            ← {BRAND_NAME} Dashboard
-          </Link>
-        </div>
-      </header>
-
-      <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-4 px-4 py-8">
+    <DashboardShell
+      user={user}
+      activeView="listings"
+      onViewChange={(view) => {
+        if (view === "profile") router.push("/account");
+        else router.push("/dashboard");
+      }}
+    >
+      <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-4">
         <h1 className="text-2xl font-bold text-black">Add New Listing</h1>
         <p className="text-sm text-gray-600">
           Publish an advert. Visitors can contact you directly — no booking account required for
@@ -221,6 +219,6 @@ export default function NewListingPage() {
           {saving ? "Publishing..." : "Publish listing"}
         </button>
       </form>
-    </div>
+    </DashboardShell>
   );
 }

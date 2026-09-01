@@ -8,6 +8,7 @@ import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { DashboardPropertyView } from "@/components/dashboard/DashboardPropertyView";
 import { DashboardSectorView } from "@/components/dashboard/DashboardSectorView";
 import { DashboardShell, type DashboardView } from "@/components/dashboard/DashboardShell";
+import { ProfileSettings } from "@/components/account/ProfileSettings";
 import { useAuth } from "@/lib/auth";
 import { getAllProperties } from "@/lib/listings";
 import { countPropertiesForUser } from "@/lib/ussap/user-properties";
@@ -86,10 +87,17 @@ export default function DashboardPage() {
     if (activeView === "listings") {
       return <DashboardListingsView listings={listings} />;
     }
+    if (activeView === "profile") {
+      return (
+        <div className="mx-auto max-w-3xl">
+          <ProfileSettings showSignOut={false} />
+        </div>
+      );
+    }
     if (SECTOR_VIEWS.includes(activeView)) {
       return (
         <DashboardSectorView
-          sectorId={activeView as Exclude<DashboardView, "overview" | "property" | "map" | "listings">}
+          sectorId={activeView as Exclude<DashboardView, "overview" | "property" | "map" | "listings" | "profile">}
           user={user}
           onViewChange={setActiveView}
         />
