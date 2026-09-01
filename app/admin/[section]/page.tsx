@@ -1,17 +1,30 @@
-import Link from "next/link";
+"use client";
+
+import { useParams } from "next/navigation";
+import { AdminShell } from "@/components/admin/AdminShell";
+
+const TITLES: Record<string, string> = {
+  blogs: "Blogs",
+  properties: "Listings",
+  users: "Users",
+  settings: "Settings",
+};
 
 export default function AdminSectionPage() {
+  const params = useParams();
+  const section = String(params.section || "");
+  const title = TITLES[section] || "Admin section";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <div className="max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
-        <h1 className="text-xl font-bold text-black">Admin section</h1>
-        <p className="mt-2 text-sm text-gray-600">
-          This admin module mirrors the overview navigation from the original app.
-        </p>
-        <Link href="/admin" className="mt-6 inline-block text-sm font-medium text-[#1e3a5f]">
-          Back to overview
-        </Link>
+    <AdminShell>
+      <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+      <p className="mt-1 text-sm text-slate-600">
+        This admin module is ready for content management. Use the sidebar to move between
+        sections.
+      </p>
+      <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-500">
+        {title} tools will appear here.
       </div>
-    </div>
+    </AdminShell>
   );
 }

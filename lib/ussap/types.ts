@@ -55,6 +55,8 @@ export interface TelecomSite extends DigitalAddress {
   lastMaintenance?: string;
   nextMaintenance?: string;
   maintenanceRouteId?: string;
+  /** Site / tower photo */
+  image?: string;
 }
 
 export interface ProjectSite extends DigitalAddress {

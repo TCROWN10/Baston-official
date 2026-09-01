@@ -8,41 +8,34 @@ import { useAuth } from "@/lib/auth";
 import { BRAND_NAME } from "@/lib/data";
 
 const NAV = [
-  { href: "/government", label: "Overview", exact: true },
-  { href: "/government/accounts", label: "All accounts" },
-  { href: "/government/hotels", label: "Hotels" },
-  { href: "/government/companies", label: "Companies" },
-  { href: "/government/schools", label: "Schools" },
-  { href: "/government/vehicles", label: "Vehicles & plates" },
-  { href: "/government/cctv", label: "CCTV & traffic" },
-  { href: "/government/taxes", label: "Taxes paid / owed" },
-  { href: "/government/billboards", label: "Billboards" },
-  { href: "/government/markets", label: "Markets" },
-  { href: "/government/projects", label: "Projects" },
+  { href: "/admin", label: "Overview", exact: true },
+  { href: "/admin/blogs", label: "Blogs" },
+  { href: "/admin/properties", label: "Listings" },
+  { href: "/admin/users", label: "Users" },
+  { href: "/admin/settings", label: "Settings" },
 ] as const;
 
 function isActive(pathname: string, href: string, exact?: boolean) {
-  if (exact || href === "/government") return pathname === "/government";
+  if (exact || href === "/admin") return pathname === "/admin";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function GovShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (loading) return;
-    if (!user || (user.role !== "government" && user.role !== "admin")) {
-      router.replace("/login?redirect=/government");
+    if (!loading && (!user || user.role !== "admin")) {
+      router.replace("/login?redirect=/admin");
     }
   }, [loading, user, router]);
 
-  if (loading || !user || (user.role !== "government" && user.role !== "admin")) {
+  if (loading || !user || user.role !== "admin") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-100 text-sm text-gray-600">
-        Checking government access…
+        Checking admin access…
       </div>
     );
   }
@@ -70,18 +63,18 @@ export function GovShell({ children }: { children: React.ReactNode }) {
         Platform
       </p>
       <Link
+        href="/ussap/console"
+        onClick={() => setMobileOpen(false)}
+        className="block rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
+      >
+        USSAP console
+      </Link>
+      <Link
         href="/ussap/sectors"
         onClick={() => setMobileOpen(false)}
         className="block rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
       >
-        USSAP sectors
-      </Link>
-      <Link
-        href="/ussap/map"
-        onClick={() => setMobileOpen(false)}
-        className="block rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
-      >
-        Live map
+        All sectors
       </Link>
       <Link
         href="/"
@@ -113,19 +106,17 @@ export function GovShell({ children }: { children: React.ReactNode }) {
         >
           Menu
         </button>
-        <span className="text-sm font-bold tracking-[0.1em] text-[#1e3a5f]">
-          {BRAND_NAME} · Gov
-        </span>
+        <span className="text-sm font-bold tracking-[0.1em] text-[#1e3a5f]">{BRAND_NAME} Admin</span>
         <UserAvatarMenu size="sm" />
       </header>
 
       <div className="mx-auto flex max-w-[1440px]">
         <aside className="hidden w-60 shrink-0 flex-col bg-[#1e3a5f] lg:sticky lg:top-0 lg:flex lg:h-screen lg:overflow-y-auto">
           <div className="border-b border-white/10 px-5 py-5">
-            <Link href="/government" className="text-base font-bold tracking-[0.12em] text-white">
+            <Link href="/admin" className="text-base font-bold tracking-[0.12em] text-white">
               {BRAND_NAME}
             </Link>
-            <p className="mt-1 text-xs text-white/60">Government portal</p>
+            <p className="mt-1 text-xs text-white/60">Admin console</p>
           </div>
           <div className="flex-1 px-3 py-4">{nav}</div>
           <div className="border-t border-white/10 px-4 py-4">

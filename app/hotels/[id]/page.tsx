@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SiteShell } from "@/components/Footer";
 import { PropertyComplianceBadges, hotelCompliance, naira } from "@/components/civic/StatusBadge";
 import { SafeImage } from "@/components/ui/SafeImage";
+import { UssapShell } from "@/components/ussap/UssapShell";
 import { getHotel } from "@/lib/civic/directory";
 import { fetchLiveHotel } from "@/lib/live/useLiveProperties";
 import type { HotelRecord } from "@/lib/civic/types";
@@ -39,25 +39,25 @@ export default function HotelDetailPage() {
 
   if (loading) {
     return (
-      <SiteShell>
+      <UssapShell>
         <div className="flex min-h-[40vh] items-center justify-center text-gray-600">
           Loading hotel…
         </div>
-      </SiteShell>
+      </UssapShell>
     );
   }
 
   if (!hotel) {
     return (
-      <SiteShell>
+      <UssapShell>
         <div className="px-4 py-16 text-center">Hotel not found.</div>
-      </SiteShell>
+      </UssapShell>
     );
   }
 
   return (
-    <SiteShell>
-      <div className="mx-auto max-w-6xl px-3 py-6 sm:px-6 sm:py-8 lg:px-10">
+    <UssapShell>
+      <div>
         <Link href="/hotels" className="text-sm text-gray-600 hover:text-black">
           ← Hotels
         </Link>
@@ -135,6 +135,6 @@ export default function HotelDetailPage() {
           </aside>
         </div>
       </div>
-    </SiteShell>
+    </UssapShell>
   );
 }
