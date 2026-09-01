@@ -745,9 +745,9 @@ export const BOOKINGS: Booking[] = [
 export const LOCATIONS = [
   { city: "Lagos", image: "/Lagos-Image.jpg", hasTag: false },
   { city: "Abuja", image: "/Abuja-image.jpg", hasTag: true },
+  { city: "Ado Ekiti", image: "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg", hasTag: false },
   { city: "Akure", image: "/Akure-image.jpg", hasTag: false },
   { city: "Ibadan", image: "/Ibadab-Image.jpg", hasTag: false },
-  { city: "Abia", image: "/Abia-image.jpg", hasTag: false },
 ] as const;
 
 export const PROPERTY_TYPES = [

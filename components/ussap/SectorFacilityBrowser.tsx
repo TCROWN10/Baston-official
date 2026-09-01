@@ -9,6 +9,7 @@ import {
   matchesOwnershipSchool,
 } from "@/lib/civic/enrich";
 import { buildLocationIndex } from "@/lib/civic/locations";
+import { NIGERIA_STATES } from "@/lib/civic/directory";
 import { getSectorDefinition, type SectorModuleId } from "@/lib/ussap/sector-modules";
 import type { HealthRecord, SchoolRecord } from "@/lib/civic/types";
 
@@ -44,6 +45,19 @@ export function SectorFacilityBrowser(props: Props) {
     () => buildLocationIndex(items.map((i) => ({ state: i.state, city: i.city, lga: i.lga }))),
     [items],
   );
+
+  const stateOptions = useMemo(() => {
+    const states = Array.from(new Set([...NIGERIA_STATES, ...locationIndex.states])).sort((a, b) =>
+      a.localeCompare(b),
+    );
+    return [
+      { value: "", label: `All Nigeria (${items.length})` },
+      ...states.map((state) => ({
+        value: state,
+        label: `${state} (${locationIndex.countByState[state] ?? 0})`,
+      })),
+    ];
+  }, [items.length, locationIndex]);
 
   const [selectedState, setSelectedState] = useState(initialState);
   const [selectedArea, setSelectedArea] = useState(initialLga);
@@ -137,13 +151,7 @@ export function SectorFacilityBrowser(props: Props) {
           }}
           ariaLabel="Select state"
           placeholder="Select state"
-          options={[
-            { value: "", label: `All Nigeria (${items.length})` },
-            ...locationIndex.states.map((state) => ({
-              value: state,
-              label: `${state} (${locationIndex.countByState[state]})`,
-            })),
-          ]}
+          options={stateOptions}
         />
         <CustomSelect
           value={selectedArea}

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { NIGERIA_STATES } from "@/lib/civic/directory";
 import {
   BED_OPTIONS,
   LOCATION_OPTIONS,
@@ -34,10 +35,18 @@ export function HeroCarousel({
   const [propertyType, setPropertyType] = useState("");
   const [bedsBath, setBedsBath] = useState("");
   const [priceRange, setPriceRange] = useState("");
+  const [sectorState, setSectorState] = useState("");
 
   const slideCount = HERO_SLIDES.length;
   const types = TYPE_OPTIONS[searchTab];
   const prices = PRICE_OPTIONS[searchTab];
+  const sectorStateOptions = useMemo(
+    () => [
+      { value: "", label: "All states" },
+      ...NIGERIA_STATES.map((state) => ({ value: state, label: state })),
+    ],
+    [],
+  );
 
   const goNext = useCallback(() => {
     setActive((prev) => (prev + 1) % slideCount);
@@ -47,6 +56,10 @@ export function HeroCarousel({
     setPropertyType("");
     setPriceRange("");
   }, [searchTab]);
+
+  useEffect(() => {
+    setSectorState("");
+  }, [active]);
 
   useEffect(() => {
     onFiltersChange({ location, propertyType, bedsBath, priceRange });
@@ -59,6 +72,17 @@ export function HeroCarousel({
   }, [paused, goNext]);
 
   const current = HERO_SLIDES[active];
+  const sectorHref =
+    current.id === "education"
+      ? sectorState
+        ? `/ussap/schools?state=${encodeURIComponent(sectorState)}`
+        : current.ctaHref
+      : current.id === "health"
+        ? sectorState
+          ? `/ussap/health?state=${encodeURIComponent(sectorState)}`
+          : current.ctaHref
+        : current.ctaHref;
+  const showSectorStateFilter = current.id === "education" || current.id === "health";
 
   return (
     <section
@@ -94,6 +118,7 @@ export function HeroCarousel({
               className="object-cover"
               src={slide.image}
               sizes="100vw"
+              unoptimized={slide.image.startsWith("/facilities/")}
             />
             <div className="absolute inset-0 bg-black/35" />
           </div>
@@ -198,23 +223,35 @@ export function HeroCarousel({
             </div>
           ) : (
             <div className="mx-auto max-w-3xl">
-              <div className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur sm:flex-row sm:rounded-2xl sm:p-5">
-                {current.ctaHref && current.ctaLabel ? (
-                  <Link
-                    href={current.ctaHref}
-                    className="cursor-pointer w-full rounded-lg bg-[#3d7ea6] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#326a8c] sm:w-auto"
-                  >
-                    {current.ctaLabel}
-                  </Link>
+              <div className="flex flex-col items-stretch justify-center gap-3 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur sm:rounded-2xl sm:p-5">
+                {showSectorStateFilter ? (
+                  <CustomSelect
+                    ariaLabel="Select state"
+                    value={sectorState}
+                    onChange={setSectorState}
+                    options={sectorStateOptions}
+                    placeholder="Select state"
+                    className="w-full"
+                  />
                 ) : null}
-                {current.secondaryHref && current.secondaryLabel ? (
-                  <Link
-                    href={current.secondaryHref}
-                    className="cursor-pointer w-full rounded-lg border border-[#1e3a5f] px-6 py-3 text-center text-sm font-semibold text-[#1e3a5f] transition-colors hover:bg-[#1e3a5f]/5 sm:w-auto"
-                  >
-                    {current.secondaryLabel}
-                  </Link>
-                ) : null}
+                <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  {sectorHref && current.ctaLabel ? (
+                    <Link
+                      href={sectorHref}
+                      className="cursor-pointer w-full rounded-lg bg-[#3d7ea6] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#326a8c] sm:w-auto"
+                    >
+                      {current.ctaLabel}
+                    </Link>
+                  ) : null}
+                  {current.secondaryHref && current.secondaryLabel ? (
+                    <Link
+                      href={current.secondaryHref}
+                      className="cursor-pointer w-full rounded-lg border border-[#1e3a5f] px-6 py-3 text-center text-sm font-semibold text-[#1e3a5f] transition-colors hover:bg-[#1e3a5f]/5 sm:w-auto"
+                    >
+                      {current.secondaryLabel}
+                    </Link>
+                  ) : null}
+                </div>
               </div>
             </div>
           )}

@@ -28,8 +28,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     id: "education",
     label: "Education",
     type: "sector",
-    image: "/Education-Hero.jpg",
-    imageAlt: "Students at a verified Nigerian school campus",
+    image: "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg",
+    imageAlt: "Christ's School Ado-Ekiti — Ekiti State secondary school",
     title: "Map every school by tier and setting",
     description:
       "Registered vs. non-registered institutions across Primary, Secondary, and Tertiary — with infrastructure audits and teacher–student metrics.",

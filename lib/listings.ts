@@ -20,6 +20,9 @@ const AREA_CITIES = [
   "akure",
   "ibadan",
   "abia",
+  "ekiti",
+  "ado ekiti",
+  "ikere",
 ];
 
 function hashId(id: string): number {
@@ -198,6 +201,8 @@ export const LOCATION_OPTIONS = [
   { value: "", label: "Any location" },
   { value: "Lagos", label: "Lagos" },
   { value: "Abuja", label: "Abuja" },
+  { value: "Ekiti", label: "Ekiti" },
+  { value: "Ado Ekiti", label: "Ado Ekiti" },
   { value: "Lekki", label: "Lekki" },
   { value: "Victoria Island", label: "Victoria Island" },
   { value: "Ikoyi", label: "Ikoyi" },
@@ -205,6 +210,8 @@ export const LOCATION_OPTIONS = [
   { value: "Gwarinpa", label: "Gwarinpa" },
   { value: "Surulere", label: "Surulere" },
   { value: "Wuse", label: "Wuse" },
+  { value: "Akure", label: "Akure" },
+  { value: "Ibadan", label: "Ibadan" },
 ];
 
 export const TYPE_OPTIONS = {

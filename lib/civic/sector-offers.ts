@@ -70,11 +70,16 @@ function hotelOffers(): SectorOffer[] {
 }
 
 function schoolOffers(): SectorOffer[] {
-  return enrichedSchools()
-    .filter((s) => s.verification === "verified")
-    .sort((a, b) => b.students - a.students)
-    .slice(0, 4)
-    .map((s) => ({
+  const verified = enrichedSchools().filter((s) => s.verification === "verified");
+  const ekiti = verified
+    .filter((s) => s.state === "Ekiti")
+    .sort((a, b) => b.students - a.students);
+  const others = verified
+    .filter((s) => s.state !== "Ekiti")
+    .sort((a, b) => b.students - a.students);
+  const picked = [...ekiti.slice(0, 3), ...others.slice(0, 1)].slice(0, 4);
+
+  return picked.map((s) => ({
       id: `school-${s.id}`,
       kind: "school" as const,
       title: s.name,
