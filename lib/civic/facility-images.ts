@@ -17,6 +17,11 @@ const SCHOOL_PREFERRED: [RegExp, string][] = [
 const HEALTH_PREFERRED: [RegExp, string][] = [
   [/university college hospital|\buch\b/i, "/facilities/health/uch-gate.jpg"],
   [/national hospital/i, "/facilities/health/national-abuja.jpg"],
+  [/reddington/i, "/facilities/health/reddington-hospital.jpg"],
+  [/lagos university teaching|\bluth\b/i, "/facilities/health/luth-surulere.jpg"],
+  [/st\.?\s*nicholas/i, "/facilities/health/st-nicholas.jpg"],
+  [/eko hospital/i, "/facilities/health/eko-hospital.jpg"],
+  [/ahmadu bello university teaching|\babuth\b/i, "/facilities/health/abuth-zaria.jpg"],
   [/university of abuja teaching|uath/i, "/facilities/health/health-003.jpg"],
 ];
 

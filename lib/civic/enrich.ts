@@ -1,10 +1,16 @@
 import { SCHOOLS } from "./directory";
 import {
+  applyOverride,
+  healthOverride,
+  schoolOverride,
+} from "./facility-overrides";
+import {
   DEFAULT_HEALTH_FALLBACK,
   DEFAULT_SCHOOL_FALLBACK,
   assignUniqueHealthImages,
   assignUniqueSchoolImages,
 } from "./facility-images";
+import { resolveFacilityAddress } from "./resolve-address";
 import { stableHash, normalizeArea } from "./locations";
 import type { HealthRecord, SchoolRecord } from "./types";
 
@@ -17,14 +23,26 @@ function enrichSchool(s: SchoolRecord): SchoolRecord {
   const ratio = 14 + (h % 10);
   const teachers = s.teachers ?? Math.max(8, Math.round(s.students / ratio));
   const establishedYear = s.establishedYear ?? 1965 + (h % 50);
-  const lga = s.lga ?? normalizeArea(s.city);
+  const resolved = resolveFacilityAddress({
+    id: s.id,
+    name: s.name,
+    address: s.address,
+    city: s.city,
+    lga: s.lga,
+  });
+  const withAddress = applyOverride(
+    { ...s, ...resolved },
+    schoolOverride(s.id),
+  );
+  const lga = withAddress.lga ?? normalizeArea(withAddress.city);
   const setting = s.setting ?? (h % 4 === 0 ? "Rural" : "Urban");
   const registered =
     s.registered ?? (s.verification === "verified" || s.verification === "pending");
-  const image = schoolImages.get(s.id) ?? DEFAULT_SCHOOL_FALLBACK;
+  const image =
+    withAddress.images?.[0] ?? schoolImages.get(s.id) ?? DEFAULT_SCHOOL_FALLBACK;
 
   return {
-    ...s,
+    ...withAddress,
     teachers,
     establishedYear,
     lga,
@@ -39,14 +57,16 @@ function enrichHealth(f: HealthRecord): HealthRecord {
   const doctors = f.doctors ?? Math.max(2, Math.round(f.beds / (8 + (h % 6))));
   const nurses = f.nurses ?? Math.max(4, Math.round(f.beds / (4 + (h % 3))));
   const establishedYear = f.establishedYear ?? 1970 + (h % 45);
-  const lga = f.lga ?? normalizeArea(f.city);
+  const withAddress = applyOverride({ ...f }, healthOverride(f.id));
+  const lga = withAddress.lga ?? normalizeArea(withAddress.city);
   const setting = f.setting ?? (h % 5 === 0 ? "Rural" : "Urban");
   const registered =
     f.registered ?? (f.verification === "verified" || f.verification === "pending");
-  const image = healthImages.get(f.id) ?? DEFAULT_HEALTH_FALLBACK;
+  const image =
+    withAddress.images?.[0] ?? healthImages.get(f.id) ?? DEFAULT_HEALTH_FALLBACK;
 
   return {
-    ...f,
+    ...withAddress,
     doctors,
     nurses,
     establishedYear,
@@ -89,9 +109,9 @@ const HEALTH_SEED: Omit<HealthRecord, "images" | "live">[] = [
     city: "Victoria Island",
     state: "Lagos",
     lga: "Eti-Osa",
-    address: "12 Idowu Martins, Victoria Island, Lagos",
-    lat: 6.4281,
-    lon: 3.4219,
+    address: "12 Idowu Martins Street, beside Mega Plaza, Victoria Island, Lagos",
+    lat: 6.4329787,
+    lon: 3.4204157,
     facilityType: "Private Hospital",
     ownership: "Private",
     tier: "Secondary",
