@@ -131,7 +131,7 @@ export function HeroCarousel({
         aria-live="polite"
       >
         <h1 className="mx-auto mb-2 max-w-4xl text-2xl font-bold leading-tight text-white sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl">
-          {current.title}
+          <HeroTitle title={current.title} />
         </h1>
         <p className="mx-auto max-w-2xl text-sm text-white/95 sm:text-base md:text-lg lg:text-xl">
           {current.description}
@@ -275,6 +275,18 @@ export function HeroCarousel({
         ))}
       </div>
     </section>
+  );
+}
+
+function HeroTitle({ title }: { title: string }) {
+  const lines = title.split(/<br\s*\/?>/i).map((line) => line.trim()).filter(Boolean);
+  if (lines.length <= 1) return title;
+
+  return (
+    <>
+      <span className="block">{lines[0]}</span>
+      <span className="block">{lines.slice(1).join(" ")}</span>
+    </>
   );
 }
 

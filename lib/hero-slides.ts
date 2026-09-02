@@ -20,7 +20,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     type: "sector",
     image: "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg",
     imageAlt: "Christ's School Ado-Ekiti — Ekiti State secondary school",
-    title: "Map every school by tier and setting",
+    title: "Assessment and gap analysis mapping every school by tier and metrics ",
     description:
       "Registered vs. non-registered institutions across Primary, Secondary, and Tertiary — with infrastructure audits and teacher–student metrics.",
     ctaLabel: "Education module",
@@ -34,7 +34,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     type: "sector",
     image: "/Health-Hero.jpg",
     imageAlt: "Modern Nigerian hospital and healthcare facility",
-    title: "Locate health facilities in minutes",
+    title: "Assessment<br>Locate health facilities in minutes",
     description:
       "From tertiary hospitals to rural health centres — track equipment, pharmaceutical stock, mobile teams, and cold-chain coverage.",
     ctaLabel: "Health module",
