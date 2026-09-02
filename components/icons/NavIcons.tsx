@@ -43,9 +43,12 @@ export function DashboardNavIcon({ className = "h-4 w-4 shrink-0" }: IconProps) 
 
 export function HomeNavIcon({ className = "h-4 w-4 shrink-0" }: IconProps) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </svg>
+    <span
+      className={`flex items-center justify-center rounded-full bg-[#1e3a5f] font-bold leading-none text-white ${className}`}
+      aria-hidden
+    >
+      B
+    </span>
   );
 }
 

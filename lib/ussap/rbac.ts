@@ -127,14 +127,14 @@ export const ROLE_DEFINITIONS: {
   {
     role: "admin",
     title: "Platform administrator",
-    audience: "USSAP system console only. Not for regular users or government officers.",
+    audience: "Bastion Technology system console only. Not for regular users or government officers.",
     home: "/ussap/console",
   },
 ];
 
 /** Keep demo seeds in code for local testing — never show passwords on public UI. */
 export const DEMO_ACCOUNTS = [
-  { email: "admin@ussap.ng", password: "admin123", role: "admin" as const, name: "USSAP Admin" },
+  { email: "admin@ussap.ng", password: "admin123", role: "admin" as const, name: "Bastion Admin" },
   { email: "gov@ussap.ng", password: "gov123", role: "government" as const, name: "Municipal Planner" },
   { email: "telecom@ussap.ng", password: "telecom123", role: "telecom" as const, name: "Telecom Operator" },
   { email: "pm@ussap.ng", password: "pm123", role: "project_manager" as const, name: "Project Manager" },

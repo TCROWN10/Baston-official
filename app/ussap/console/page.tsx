@@ -63,7 +63,7 @@ export default function ConsolePage() {
       <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
         Platform administrators only
       </p>
-      <h1 className="mt-1 text-2xl font-bold sm:text-3xl">USSAP admin console</h1>
+      <h1 className="mt-1 text-2xl font-bold sm:text-3xl">Bastion Technology admin console</h1>
       <p className="mt-1 text-sm text-slate-600">
         System oversight — sites, sectors, and every registered account on the platform.
       </p>
@@ -92,7 +92,7 @@ export default function ConsolePage() {
         <div className="mt-8">
           <AccountsRegistry
             title="Account registry"
-            description="Track every user on USSAP — personal sign-ups, demo roles, linked properties, and locations."
+            description="Track every user on Bastion Technology — personal sign-ups, demo roles, linked properties, and locations."
             accounts={accounts}
             variant="admin"
           />

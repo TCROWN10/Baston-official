@@ -83,7 +83,7 @@ const DEMO_SEEDS: User[] = [
   {
     id: "admin-1",
     email: "admin@ussap.ng",
-    fullName: "USSAP Admin",
+    fullName: "Bastion Admin",
     phone: "+234 800 000 0000",
     role: "admin",
     password: "admin123",

@@ -12,6 +12,7 @@ import { viewListingProperty } from "@/lib/listings-privacy";
 import { getPropertyById, formatPrice, bedLabel, withPropertyCompliance } from "@/lib/listings";
 import { fetchLiveProperty } from "@/lib/live/useLiveProperties";
 import { privacyViewerFromUser } from "@/lib/ussap/property-privacy";
+import { HOME_HREF } from "@/lib/site-nav";
 import { isSaved, toggleSavedHome } from "@/lib/saved";
 import type { Property } from "@/lib/types";
 
@@ -77,7 +78,7 @@ export default function PropertyPage() {
           <h1 className="text-2xl font-bold text-black">Failed to load property</h1>
           <button
             type="button"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(HOME_HREF)}
             className="mt-6 rounded-lg bg-[#1e3a5f] px-5 py-2.5 text-sm font-medium text-white"
           >
             Back home

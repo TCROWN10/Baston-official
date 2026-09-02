@@ -5,9 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { HomeNavIcon, NavIconGlyph } from "@/components/icons/NavIcons";
+import { BrandLogo } from "@/components/BrandLogo";
+import { BrandLogoLink } from "@/components/BrandLogoLink";
 import { BRAND_NAME } from "@/lib/data";
+import { BRAND } from "@/lib/brand";
 import { useAuth } from "@/lib/auth";
-import { MOBILE_TAB_NAV } from "@/lib/site-nav";
+import { HOME_HREF, MOBILE_TAB_NAV } from "@/lib/site-nav";
 import { dashboardPath } from "@/lib/ussap/rbac";
 import type { UssapRole } from "@/lib/ussap/types";
 
@@ -18,14 +21,14 @@ export function MobileNav() {
 
   const tabs = user
     ? [
-        { href: "/", label: "Home", icon: "home" as const },
+        { href: HOME_HREF, label: "Home", icon: "home" as const },
         { href: dashHref, label: "Dashboard", icon: "dashboard" as const },
         { href: "/ussap/schools", label: "Education", icon: "🎓" as const },
         { href: "/ussap/health", label: "Health", icon: "🏥" as const },
         { href: "/hotels", label: "Hotels", icon: "🏨" as const },
       ]
     : MOBILE_TAB_NAV.map((item) =>
-        item.href === "/" ? { ...item, icon: "home" as const } : item,
+        item.href === HOME_HREF ? { ...item, icon: "home" as const } : item,
       );
 
   return (
@@ -38,7 +41,7 @@ export function MobileNav() {
         {tabs.map((item) => {
           const active =
             pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href)) ||
+            (item.href !== HOME_HREF && pathname.startsWith(item.href)) ||
             (item.icon === "dashboard" && pathname.startsWith("/dashboard"));
           return (
             <Link
@@ -87,7 +90,7 @@ export function Newsletter() {
           </div>
           <div className="relative z-10 flex flex-col items-center justify-center px-4 py-12 text-center sm:px-6 sm:py-16 lg:px-8">
             <h2 className="mb-6 text-lg font-bold leading-tight text-white sm:mb-8 sm:text-xl md:text-2xl lg:text-4xl">
-              Get USSAP updates on digital addressing, sector registries, and spatial intelligence —
+              Get {BRAND.name} updates on digital addressing, sector registries, and spatial intelligence —
               delivered to your inbox every week
             </h2>
             <form
@@ -124,16 +127,13 @@ export function Footer() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-10">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-3 xl:grid-cols-5">
             <div className="sm:col-span-2 md:col-span-3 xl:col-span-1">
-              <Link className="mb-3 flex items-center gap-2 sm:mb-4" href="/">
-                <svg className="h-6 w-6 shrink-0 text-white sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                </svg>
+              <BrandLogoLink className="mb-3 flex items-center gap-2 sm:mb-4">
+                <BrandLogo size="sm" variant="white" className="sm:h-8 sm:w-8" />
                 <span className="text-lg font-bold text-white sm:text-xl">{BRAND_NAME}</span>
-              </Link>
+              </BrandLogoLink>
               <p className="text-xs leading-5 text-white/90 sm:text-sm sm:leading-6">
-                {BRAND_NAME} — Unified Smart Spatial Addressing Platform. Find verified stays and
-                precise digital addresses for homes, schools, telecom sites, projects, and civic
-                infrastructure across Nigeria.
+                {BRAND.tagline} Find verified stays and precise digital addresses for homes,
+                schools, telecom sites, projects, and civic infrastructure across Nigeria.
               </p>
             </div>
             <div>
@@ -197,7 +197,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="mb-3 text-sm font-semibold text-white sm:mb-4 sm:text-base">USSAP</h3>
+              <h3 className="mb-3 text-sm font-semibold text-white sm:mb-4 sm:text-base">Platform</h3>
               <ul className="space-y-2 sm:space-y-3">
                 <li>
                   <Link href="/ussap/map" className="text-sm text-white/90 transition-colors hover:text-white">

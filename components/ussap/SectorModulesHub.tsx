@@ -13,7 +13,7 @@ export function SectorModulesHub() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 sm:mb-8">
           <h2 className="text-xl font-bold text-black sm:text-2xl lg:text-3xl">
-            USSAP <span className="text-[#1e3a5f]">sector modules</span>
+            <span className="text-[#1e3a5f]">Bastion Technology</span> sector modules
           </h2>
           <p className="mt-2 max-w-3xl text-sm text-gray-600 sm:text-base">
             Six integrated sectors plus Bastion TECHNOLOGY cross-cutting tools — each with

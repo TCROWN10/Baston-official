@@ -53,7 +53,7 @@ export function DashboardOverview({
       hint: `${listingCount} total in hospitality sector`,
     },
     {
-      label: "USSAP sectors",
+      label: "Bastion sectors",
       value: "6 + Bastion",
       hint: "Education, health, billboards, hotels, telecom, field tools",
     },
@@ -94,7 +94,7 @@ export function DashboardOverview({
       </div>
 
       <div className="mt-6 rounded-xl border border-[#1e3a5f]/15 bg-[#1e3a5f]/5 px-4 py-3 text-sm text-slate-700">
-        <strong>Core USSAP mission:</strong> check or register your property with a digital address
+        <strong>Core mission:</strong> check or register your property with a Bastion Technology digital address
         under{" "}
         <button
           type="button"

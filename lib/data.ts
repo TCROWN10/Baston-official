@@ -768,5 +768,6 @@ export const PROPERTY_TYPES = [
   },
 ] as const;
 
-export const BRAND_NAME = "USSAP";
-export const BRAND_FULL_NAME = "Unified Smart Spatial Addressing Platform";
+export { BRAND_NAME } from "./brand";
+export { BRAND } from "./brand";
+export const BRAND_FULL_NAME = "Bastion Technology";

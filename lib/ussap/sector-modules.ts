@@ -30,7 +30,7 @@ export const BASTION_SERVICES = {
   name: "Bastion TECHNOLOGY",
   title: "Cross-Cutting Core Modules: Monitoring, Assessment, & Data",
   tagline:
-    "Bastion TECHNOLOGY cuts across every USSAP sector — powering field data collection and project lifecycle monitoring from one platform.",
+    "Bastion TECHNOLOGY cuts across every sector — powering field data collection and project lifecycle monitoring from one platform.",
   modules: [
     {
       title: "Universal Data Gathering Engine",

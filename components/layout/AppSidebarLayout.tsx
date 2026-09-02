@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { SidebarPanelToggleIcon } from "@/components/icons/NavIcons";
+import { BrandLogo } from "@/components/BrandLogo";
+import { BrandLogoLink } from "@/components/BrandLogoLink";
 
 type Props = {
   brandHref: string;
@@ -35,9 +37,10 @@ function SidebarPanel({
   return (
     <>
       <div className="border-b border-white/10 px-4 py-4 sm:px-5 sm:py-5">
-        <Link href={brandHref} className="text-base font-bold tracking-[0.12em] text-white">
-          {brandTitle}
-        </Link>
+        <BrandLogoLink singleHref={brandHref} className="flex items-center gap-3">
+          <BrandLogo size="sm" />
+          <span className="text-base font-bold tracking-[0.08em] text-white">{brandTitle}</span>
+        </BrandLogoLink>
         <p className="mt-1 text-xs text-white/60">{brandSubtitle}</p>
       </div>
       <div className={`flex-1 overflow-y-auto px-3 py-3 lg:py-4 ${navClassName}`}>{nav}</div>

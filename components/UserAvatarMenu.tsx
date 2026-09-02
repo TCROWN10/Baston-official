@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { dashboardPath } from "@/lib/ussap/rbac";
+import { HOME_HREF } from "@/lib/site-nav";
 import type { UssapRole } from "@/lib/ussap/types";
 
 function initials(name: string) {
@@ -106,7 +107,7 @@ export function UserAvatarMenu({ size = "md", align = "right", className = "" }:
             onClick={() => {
               setOpen(false);
               logout();
-              router.push("/");
+              router.push(HOME_HREF);
             }}
             className="cursor-pointer block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
           >

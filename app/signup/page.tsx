@@ -7,6 +7,7 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/lib/auth";
 import { lgasForState, NIGERIA_STATES } from "@/lib/civic/nigeria-admin";
 import { BRAND } from "@/lib/ussap/data";
+import { HOME_HREF } from "@/lib/site-nav";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -76,7 +77,7 @@ export default function SignupPage() {
       <div className="w-full max-w-sm rounded-xl border border-slate-200/80 bg-white p-5 shadow-lg shadow-[#1e3a5f]/8 sm:p-6">
         <div className="text-center">
           <Link
-            href="/"
+            href={HOME_HREF}
             className="text-sm font-bold tracking-[0.12em] text-[#1e3a5f] hover:text-[#152a45]"
           >
             {BRAND.name}

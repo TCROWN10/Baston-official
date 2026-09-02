@@ -19,10 +19,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     label: "Education",
     type: "sector",
     image: "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg",
-    imageAlt: "Christ's School Ado-Ekiti — Ekiti State secondary school",
+    imageAlt: "Christ's School Ado-Ekiti Ekiti State secondary school",
     title: "Assessment and gap analysis mapping every school by tier and metrics ",
     description:
-      "Registered vs. non-registered institutions across Primary, Secondary, and Tertiary — with infrastructure audits and teacher–student metrics.",
+      "Registered vs. non registered institutions across Primary, Secondary, and Tertiary  with infrastructure audits and teacher student metrics.",
     ctaLabel: "Education module",
     ctaHref: "/ussap/schools",
     secondaryLabel: "Module overview",
@@ -36,7 +36,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageAlt: "Modern Nigerian hospital and healthcare facility",
     title: "Assessment<br>Locate health facilities in minutes",
     description:
-      "From tertiary hospitals to rural health centres — track equipment, pharmaceutical stock, mobile teams, and cold-chain coverage.",
+      "From tertiary hospitals to rural health centres track equipment, pharmaceutical stock, mobile teams, and cold chain coverage.",
     ctaLabel: "Health module",
     ctaHref: "/ussap/health",
     secondaryLabel: "Module overview",
@@ -50,7 +50,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageAlt: "Outdoor advertising and urban signage in Nigeria",
     title: "Audit outdoor signage in minutes",
     description:
-      "Geo-tagged legal vs. unauthorized billboards with permit expiry tracking, dimension verification, and revenue enforcement.",
+      "Geo tagged legal vs. unauthorized billboards with permit expiry tracking, dimension verification, and revenue enforcement.",
     ctaLabel: "Billboard registry",
     ctaHref: "/ussap/billboards",
     secondaryLabel: "Module overview",
@@ -78,7 +78,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageAlt: "Bastion TECHNOLOGY field data collection and project monitoring",
     title: "Monitoring, assessment & data for every sector",
     description:
-      "Universal data gathering with GPS-tagged forms, offline sync, and media uploads — plus project lifecycle tracking from conception to completion.",
+      "Universal data gathering with GPS-tagged forms, offline sync, and media uploads plus project lifecycle tracking from conception to completion.",
     ctaLabel: "Field collection",
     ctaHref: "/ussap/field",
     secondaryLabel: "Our services",
@@ -92,7 +92,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageAlt: "Nigerian hotel and hospitality property",
     title: "Verify hospitality in minutes",
     description:
-      "Complete hotel directory by tier and capacity — with hygiene, fire safety, structural compliance, and tourist tax auditing.",
+      "Complete hotel directory by tier and capacity with hygiene, fire safety, structural compliance, and tourist tax auditing.",
     ctaLabel: "Browse hotels",
     ctaHref: "/hotels",
     secondaryLabel: "Module overview",
@@ -106,7 +106,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageAlt: "Modern homes and shortlet apartments in Nigeria",
     title: "Find a place to stay in minutes",
     description:
-      "Discover verified shortlets, rentals, and homes for sale — powered by USSAP digital addresses across Nigeria.",
+      "Discover verified shortlets, rentals, and homes for sale — powered by Bastion Technology digital addresses across Nigeria.",
   },
 ];
 

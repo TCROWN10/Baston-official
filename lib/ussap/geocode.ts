@@ -1,5 +1,7 @@
+import { BRAND } from "../brand";
+
 /**
- * USSAP Precision Geocoding — Open Location Code–style 6–8 char grid codes.
+ * Precision Geocoding — Open Location Code–style 6–8 char grid codes.
  * Paired always with GPS latitude / longitude.
  */
 
@@ -57,7 +59,7 @@ export function normalizeCode(code: string): string {
 export function decodeGrid(code: string): { lat: number; lng: number; precisionM: number } {
   const clean = normalizeCode(code);
   if (clean.length < 6 || clean.length % 2 !== 0) {
-    throw new Error("Invalid USSAP digital address");
+    throw new Error(`Invalid ${BRAND.name} digital address`);
   }
 
   let latVal = 0;
@@ -90,5 +92,5 @@ export function assertValidCode(code: string): boolean {
 /** Human-readable share string */
 export function shareAddress(code: string, label?: string): string {
   const formatted = formatCode(normalizeCode(code));
-  return label ? `${label} · USSAP ${formatted}` : `USSAP ${formatted}`;
+  return label ? `${label} · ${BRAND.shortName} ${formatted}` : `${BRAND.shortName} ${formatted}`;
 }

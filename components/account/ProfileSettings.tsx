@@ -4,7 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/lib/auth";
+import { BRAND } from "@/lib/brand";
 import { lgasForState, NIGERIA_STATES } from "@/lib/civic/nigeria-admin";
+import { HOME_HREF } from "@/lib/site-nav";
 import type { UserRole } from "@/lib/types";
 
 export function profileInitials(name: string) {
@@ -171,7 +173,7 @@ export function ProfileSettings({ showSignOut = true }: Props) {
       >
         <h2 className="text-base font-semibold text-slate-900">Personal details</h2>
         <p className="mt-1 text-sm text-slate-500">
-          Update how your name and contact details appear across USSAP.
+          Update how your name and contact details appear across {BRAND.name}.
         </p>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -347,7 +349,7 @@ export function ProfileSettings({ showSignOut = true }: Props) {
             type="button"
             onClick={() => {
               logout();
-              router.push("/");
+              router.push(HOME_HREF);
             }}
             className="cursor-pointer mt-4 rounded-lg border border-red-200 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
           >

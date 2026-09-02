@@ -24,7 +24,7 @@ export async function overpassQuery(query: string, timeoutMs = 120_000): Promise
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": "USSAP-LiveDirectory/1.0 (Nigeria hotels & properties)",
+          "User-Agent": "Bastion-Technology-LiveDirectory/1.0 (Nigeria hotels & properties)",
         },
         body: new URLSearchParams({ data: query }),
         signal: controller.signal,

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/Footer";
 import { getSavedHomes, removeSavedHome } from "@/lib/saved";
+import { HOME_HREF } from "@/lib/site-nav";
 import type { SavedHome } from "@/lib/types";
 
 export default function SavedPage() {
@@ -34,7 +35,7 @@ export default function SavedPage() {
             <p className="text-lg font-medium text-black">No saved homes yet</p>
             <p className="mt-2 text-gray-600">Tap the heart on any listing to save it here.</p>
             <Link
-              href="/"
+              href={HOME_HREF}
               className="mt-6 inline-block rounded-lg bg-[#1e3a5f] px-5 py-2.5 text-sm font-medium text-white"
             >
               Browse listings

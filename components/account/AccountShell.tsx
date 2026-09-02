@@ -9,6 +9,7 @@ import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { useAuth } from "@/lib/auth";
 import { BRAND } from "@/lib/ussap/data";
 import { canAccessAdminConsole, canAccessGovernmentPortal, dashboardPath } from "@/lib/ussap/rbac";
+import { HOME_HREF } from "@/lib/site-nav";
 import type { UssapRole } from "@/lib/ussap/types";
 
 const NAV = [
@@ -90,7 +91,7 @@ export function AccountShell({ children, requireAuth = true, wide = false }: Pro
         <span aria-hidden className="w-5 text-center text-xs">
           ▦
         </span>
-        USSAP sectors
+        {BRAND.name} sectors
       </Link>
       {showGov ? (
         <Link
@@ -115,7 +116,7 @@ export function AccountShell({ children, requireAuth = true, wide = false }: Pro
         </Link>
       ) : null}
       <Link
-        href="/"
+        href={HOME_HREF}
         className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
       >
         <span aria-hidden className="w-5 text-center text-xs">
@@ -128,7 +129,7 @@ export function AccountShell({ children, requireAuth = true, wide = false }: Pro
           type="button"
           onClick={() => {
             logout();
-            router.push("/");
+            router.push(HOME_HREF);
           }}
           className="mt-2 flex w-full cursor-pointer items-center gap-2.5 rounded-lg border border-white/20 px-3 py-2 text-left text-sm font-medium text-white/80 hover:bg-white/10"
         >

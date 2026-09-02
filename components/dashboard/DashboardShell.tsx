@@ -5,6 +5,7 @@ import { UserAvatarMenu } from "@/components/UserAvatarMenu";
 import { NavIconGlyph } from "@/components/icons/NavIcons";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { BRAND } from "@/lib/ussap/data";
+import { HOME_HREF } from "@/lib/site-nav";
 import type { DashboardUser } from "./types";
 
 const SECTOR_NAV = [
@@ -58,7 +59,7 @@ function SidebarNav({
       </button>
 
       <p className="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
-        Your USSAP
+        Your {BRAND.shortName}
       </p>
       <button
         type="button"
@@ -125,7 +126,7 @@ function SidebarNav({
         <span aria-hidden className="w-5 text-center text-xs">🗺</span>
         Live map
       </button>
-      <Link href="/" className={linkClass(false)}>
+      <Link href={HOME_HREF} className={linkClass(false)}>
         <span aria-hidden className="w-5 text-center text-xs">↗</span>
         Public site
       </Link>

@@ -1,7 +1,7 @@
 {
-  "name": "Unified Smart Spatial Addressing Platform",
-  "short_name": "USSAP",
-  "description": "Precise digital addresses for schools, telecom, projects, traffic, and homes.",
+  "name": "Bastion Technology",
+  "short_name": "Bastion",
+  "description": "Monitoring, assessment, and spatial intelligence for Nigeria's critical infrastructure.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f4f7fa",

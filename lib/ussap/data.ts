@@ -1,4 +1,5 @@
 import { encodeGrid } from "./geocode";
+import { BRAND } from "../brand";
 import type {
   ProjectSite,
   ResidentialSite,
@@ -458,6 +459,8 @@ export const RESIDENTIAL_SITES: ResidentialSite[] = [
   },
 ];
 
+export { BRAND };
+
 export function allSites(): UssapSite[] {
   return [
     ...TELECOM_SITES,
@@ -472,9 +475,3 @@ export function findByCode(code: string): UssapSite | undefined {
   const n = code.replace(/[^0-9A-Z]/gi, "").toUpperCase();
   return allSites().find((s) => s.code.replace(/[^0-9A-Z]/gi, "") === n);
 }
-
-export const BRAND = {
-  name: "USSAP",
-  fullName: "Unified Smart Spatial Addressing Platform",
-  tagline: "Precise digital addresses for Nigeria’s critical places",
-};

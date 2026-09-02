@@ -49,7 +49,7 @@ export function UssapMapExplorer({
   role,
   viewer,
   title = "Live map",
-  description = "Multi-layer USSAP map with sector overlays. Privacy rules apply to residential records you do not own.",
+  description = "Multi-layer Bastion Technology map with sector overlays. Privacy rules apply to residential records you do not own.",
   heightClass = "h-[320px] sm:h-[420px] md:h-[480px] lg:h-[560px]",
   showSelectionPanel = true,
   embedded = false,

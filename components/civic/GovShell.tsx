@@ -7,6 +7,8 @@ import { UserAvatarMenu } from "@/components/UserAvatarMenu";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { useAuth } from "@/lib/auth";
 import { BRAND_NAME } from "@/lib/data";
+import { HOME_HREF } from "@/lib/site-nav";
+import { BRAND } from "@/lib/brand";
 
 const NAV = [
   { href: "/government", label: "Overview", exact: true },
@@ -72,7 +74,7 @@ export function GovShell({ children }: { children: React.ReactNode }) {
         href="/ussap/sectors"
         className="block rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
       >
-        USSAP sectors
+        {BRAND.name} sectors
       </Link>
       <Link
         href="/ussap/map"
@@ -81,7 +83,7 @@ export function GovShell({ children }: { children: React.ReactNode }) {
         Live map
       </Link>
       <Link
-        href="/"
+        href={HOME_HREF}
         className="block rounded-lg px-3 py-2 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
       >
         Public site
@@ -90,7 +92,7 @@ export function GovShell({ children }: { children: React.ReactNode }) {
         type="button"
         onClick={() => {
           logout();
-          router.push("/");
+          router.push(HOME_HREF);
         }}
         className="mt-2 w-full cursor-pointer rounded-lg border border-white/20 px-3 py-2 text-left text-sm font-medium text-white/80 hover:bg-white/10"
       >

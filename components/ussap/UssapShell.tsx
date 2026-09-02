@@ -7,6 +7,7 @@ import { NavIconGlyph } from "@/components/icons/NavIcons";
 import { AppSidebarLayout } from "@/components/layout/AppSidebarLayout";
 import { useAuth } from "@/lib/auth";
 import { BRAND } from "@/lib/ussap/data";
+import { HOME_HREF } from "@/lib/site-nav";
 import { canAccessAdminConsole, canAccessGovernmentPortal } from "@/lib/ussap/rbac";
 
 type NavItem = { href: string; label: string; icon: string; exact?: boolean };
@@ -113,7 +114,7 @@ function SidebarNav() {
           pathname={pathname}
         />
       ) : null}
-      <NavLink item={{ href: "/", label: "Public site", icon: "↗" }} pathname={pathname} />
+      <NavLink item={{ href: HOME_HREF, label: "Public site", icon: "↗" }} pathname={pathname} />
     </nav>
   );
 }

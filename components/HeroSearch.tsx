@@ -65,7 +65,7 @@ export function HeroSearch({
           Find a place to stay in minutes
         </h1>
         <p className="mx-auto max-w-2xl text-sm text-white/95 sm:text-base md:text-lg lg:text-xl">
-          Discover verified shortlets, rentals, and homes for sale — powered by USSAP digital
+          Discover verified shortlets, rentals, and homes for sale — powered by Bastion Technology digital
           addresses across Nigeria.
         </p>
       </div>

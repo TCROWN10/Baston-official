@@ -33,7 +33,7 @@ export default function TelecomPage() {
     <UssapShell>
       <h1 className="text-2xl font-bold sm:text-3xl">Telecommunications module</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Browse tower sites with photos and USSAP digital addresses. Operators sign in to manage
+        Browse tower sites with photos and Bastion Technology digital addresses. Operators sign in to manage
         equipment specs, serial numbers, and maintenance routes on restricted sites.
       </p>
 

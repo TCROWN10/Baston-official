@@ -11,7 +11,7 @@ export function DashboardMapView({ user }: { user: DashboardUser }) {
       viewer={privacyViewerFromUser(user)}
       embedded
       title="Live map"
-      description="Explore USSAP sites by sector. Tap a marker to inspect the record here — without leaving your dashboard."
+      description="Explore Bastion Technology sites by sector. Tap a marker to inspect the record here — without leaving your dashboard."
       heightClass="h-[280px] sm:h-[380px] md:h-[440px] lg:h-[520px]"
     />
   );

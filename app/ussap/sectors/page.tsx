@@ -5,7 +5,7 @@ import { SECTOR_DEFINITIONS } from "@/lib/ussap/sector-modules";
 export default function SectorsIndexPage() {
   return (
     <UssapShell>
-      <h1 className="text-3xl font-bold">USSAP sector modules</h1>
+      <h1 className="text-3xl font-bold">Bastion Technology sector modules</h1>
       <p className="mt-2 max-w-3xl text-sm text-slate-600">
         Six sector modules plus Bastion TECHNOLOGY cross-cutting services for monitoring,
         assessment, and data intelligence across Nigeria.

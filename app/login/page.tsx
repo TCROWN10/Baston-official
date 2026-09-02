@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { BRAND } from "@/lib/ussap/data";
+import { HOME_HREF } from "@/lib/site-nav";
 import { ROLE_DEFINITIONS, dashboardPath } from "@/lib/ussap/rbac";
 import type { UssapRole } from "@/lib/ussap/types";
 import type { UserRole } from "@/lib/types";
@@ -63,7 +64,7 @@ function LoginForm() {
       <div className="w-full max-w-sm rounded-xl border border-slate-200/80 bg-white p-5 shadow-lg shadow-[#1e3a5f]/8 sm:p-6">
         <div className="text-center">
           <Link
-            href="/"
+            href={HOME_HREF}
             className="text-sm font-bold tracking-[0.12em] text-[#1e3a5f] hover:text-[#152a45]"
           >
             {BRAND.name}

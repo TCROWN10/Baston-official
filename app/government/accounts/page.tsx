@@ -12,7 +12,7 @@ export default function GovernmentAccountsPage() {
     <GovShell>
       <AccountsRegistry
         title="Registered accounts"
-        description="Monitor every USSAP account — individuals, organisations, demo roles, and linked residential properties across Nigeria."
+        description="Monitor every Bastion Technology account — individuals, organisations, demo roles, and linked residential properties across Nigeria."
         accounts={accounts}
         variant="government"
       />

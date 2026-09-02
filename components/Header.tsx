@@ -4,19 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { UserAvatarMenu } from "@/components/UserAvatarMenu";
+import { BrandLogo } from "@/components/BrandLogo";
+import { BrandLogoLink } from "@/components/BrandLogoLink";
 import { BRAND_NAME } from "@/lib/data";
 import { useAuth } from "@/lib/auth";
-import { navActive, DESKTOP_NAV, MOBILE_MARKETPLACE_NAV, MOBILE_USSAP_NAV, TABLET_CHIP_NAV } from "@/lib/site-nav";
+import { HOME_HREF, navActive, DESKTOP_NAV, MOBILE_MARKETPLACE_NAV, MOBILE_USSAP_NAV, TABLET_CHIP_NAV } from "@/lib/site-nav";
 import { dashboardPath } from "@/lib/ussap/rbac";
 import type { UssapRole } from "@/lib/ussap/types";
-
-function HomeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </svg>
-  );
-}
 
 export function Header() {
   const pathname = usePathname();
@@ -46,12 +40,10 @@ export function Header() {
   return (
     <header className="sticky top-0 left-0 right-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:px-6 sm:py-3.5 lg:px-10">
-        <Link className="flex min-w-0 items-center gap-2" href="/">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f] sm:h-10 sm:w-10">
-            <HomeIcon className="h-5 w-5 text-white sm:h-6 sm:w-6" />
-          </div>
+        <BrandLogoLink className="flex min-w-0 items-center gap-2">
+          <BrandLogo size="sm" className="sm:h-10 sm:w-10" />
           <span className="truncate text-base font-bold text-black sm:text-xl">{BRAND_NAME}</span>
-        </Link>
+        </BrandLogoLink>
 
         <nav className="hidden items-center gap-1 xl:flex">
           {DESKTOP_NAV.map((item) => (
@@ -117,11 +109,11 @@ export function Header() {
       {open ? (
         <div className="max-h-[min(80vh,640px)] overflow-y-auto border-t border-gray-200 bg-white px-3 py-4 sm:px-6 xl:hidden">
           <div className="flex flex-col gap-1">
-            <Link href="/" className={linkClass("/")}>
+            <Link href={HOME_HREF} className={linkClass(HOME_HREF)}>
               Home
             </Link>
             <p className="mt-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-              USSAP platform
+              Bastion Technology platform
             </p>
             {MOBILE_USSAP_NAV.map((item) => (
               <Link key={item.href} href={item.href} className={linkClass(item.href)}>

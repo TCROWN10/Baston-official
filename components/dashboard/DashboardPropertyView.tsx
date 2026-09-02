@@ -228,7 +228,7 @@ export function DashboardPropertyView({ user }: Props) {
         </div>
         {myProperties.length === 0 ? (
           <div className="px-5 py-10 text-center text-sm text-slate-600">
-            No properties linked yet. Register your home or plot above to get a USSAP digital address.
+            No properties linked yet. Register your home or plot above to get a Bastion Technology digital address.
           </div>
         ) : (
           <ul className="divide-y divide-slate-100">

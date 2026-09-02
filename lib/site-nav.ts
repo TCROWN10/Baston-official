@@ -1,5 +1,8 @@
 /** Shared site navigation — USSAP sectors + properties & hotels marketplace */
 
+export const HOME_HREF = "/home";
+export const INTRO_HREF = "/";
+
 export const SECTOR_NAV = [
   { href: "/ussap/map", label: "Live Map" },
   { href: "/ussap/schools", label: "Education" },
@@ -32,7 +35,7 @@ export const DESKTOP_NAV = [
 
 /** Bottom bar on phones — USSAP-first, hotels included. */
 export const MOBILE_TAB_NAV = [
-  { href: "/", label: "Home", icon: "⌂" },
+  { href: HOME_HREF, label: "Home", icon: "⌂" },
   { href: "/ussap/schools", label: "Education", icon: "🎓" },
   { href: "/ussap/health", label: "Health", icon: "🏥" },
   { href: "/hotels", label: "Hotels", icon: "🏨" },
@@ -97,7 +100,9 @@ export const PROPERTIES_HUB = [
 ] as const;
 
 export function navActive(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/";
+  if (href === HOME_HREF || href === "/") {
+    return pathname === HOME_HREF || pathname === "/";
+  }
   if (href === "/hotels") return pathname.startsWith("/hotels");
   if (href === "/buy") return pathname.startsWith("/buy") || pathname.startsWith("/property");
   if (href === "/rent") return pathname.startsWith("/rent");

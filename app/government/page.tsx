@@ -42,7 +42,7 @@ export default function GovernmentHomePage() {
           <div>
             <h2 className="font-semibold text-black">Registered accounts</h2>
             <p className="mt-1 text-sm text-gray-600">
-              Track every USSAP user — location, role, and linked properties.
+              Track every Bastion Technology user — location, role, and linked properties.
             </p>
           </div>
           <Link
