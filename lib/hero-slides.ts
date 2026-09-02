@@ -99,14 +99,16 @@ export const HERO_SLIDES: HeroSlide[] = [
     secondaryHref: "/ussap/sectors/hospitality",
   },
   {
-    id: "property",
-    label: "Stays",
-    type: "property",
+    id: "about",
+    label: "About US",
+    type: "sector",
     image: "/Hero-Image.jpg",
-    imageAlt: "Modern homes and shortlet apartments in Nigeria",
-    title: "Find a place to stay in minutes",
+    imageAlt: "Bastion Technology monitoring, assessment, and spatial intelligence",
+    title: "About Bastion Technology",
     description:
-      "Discover verified shortlets, rentals, and homes for sale — powered by Bastion Technology digital addresses across Nigeria.",
+      "Monitoring, assessment, and data for every sector — from field collection and project tracking to digital addressing across Nigeria.",
+    ctaLabel: "Our services",
+    ctaHref: "/ussap/sectors/core",
   },
 ];
 
