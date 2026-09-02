@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { BRAND } from "@/lib/ussap/data";
@@ -29,10 +30,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full overflow-x-hidden bg-[#f4f7fa] text-slate-900 antialiased" suppressHydrationWarning>
+      <body
+        className="min-h-full overflow-x-hidden bg-[#f4f7fa] text-slate-900 antialiased"
+        suppressHydrationWarning
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
