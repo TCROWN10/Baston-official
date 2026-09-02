@@ -266,7 +266,7 @@ export function SiteShell({
   showMobileNav?: boolean;
 }) {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-slate-50">
+    <div className="relative flex min-h-screen max-w-[100vw] flex-col overflow-x-hidden bg-slate-50">
       <Header />
       <main className={`min-w-0 flex-1 ${showMobileNav ? "pb-24 lg:pb-0" : ""}`}>{children}</main>
       <Footer />

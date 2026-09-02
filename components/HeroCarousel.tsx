@@ -86,7 +86,7 @@ export function HeroCarousel({
 
   return (
     <section
-      className="relative min-h-[70vh] w-full overflow-hidden sm:min-h-[80vh] md:h-screen md:min-h-0"
+      className="relative isolate h-[min(88svh,820px)] min-h-[min(480px,100svh)] w-full max-w-[100vw] overflow-hidden sm:min-h-[540px] sm:h-[min(88svh,900px)] md:h-[min(100svh,960px)]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -97,17 +97,17 @@ export function HeroCarousel({
       aria-label="Featured services"
     >
       <div
-        className="flex h-full min-h-[inherit] ease-in-out"
+        className="flex h-full ease-in-out will-change-transform"
         style={{
           width: `${slideCount * 100}%`,
-          transform: `translateX(-${(active * 100) / slideCount}%)`,
+          transform: `translate3d(-${(active * 100) / slideCount}%, 0, 0)`,
           transition: `transform ${HERO_TRANSITION_MS}ms ease-in-out`,
         }}
       >
         {HERO_SLIDES.map((slide, index) => (
           <div
             key={slide.id}
-            className="relative min-h-[inherit] flex-shrink-0"
+            className="relative h-full flex-shrink-0"
             style={{ width: `${100 / slideCount}%` }}
             aria-hidden={index !== active}
           >
@@ -115,7 +115,7 @@ export function HeroCarousel({
               alt={slide.imageAlt}
               fill
               priority={index === 0}
-              className="object-cover"
+              className="object-cover object-center"
               src={slide.image}
               sizes="100vw"
               unoptimized={slide.image.startsWith("/facilities/")}
@@ -127,18 +127,18 @@ export function HeroCarousel({
 
       <div
         key={current.id}
-        className="pointer-events-none absolute inset-x-0 top-[12%] z-20 animate-[heroFade_1.2s_ease-in-out] px-4 text-center sm:top-[18%] sm:px-6 md:top-1/4"
+        className="pointer-events-none absolute inset-x-0 top-[8%] z-20 animate-[heroFade_1.2s_ease-in-out] px-3 text-center sm:top-[16%] sm:px-6 md:top-[20%]"
         aria-live="polite"
       >
-        <h1 className="mx-auto mb-2 max-w-4xl text-2xl font-bold leading-tight text-white sm:mb-4 sm:text-4xl md:text-5xl lg:text-6xl">
+        <h1 className="mx-auto mb-2 max-w-4xl text-balance text-lg font-bold leading-snug text-white sm:mb-3 sm:text-3xl sm:leading-tight md:text-4xl lg:text-5xl">
           <HeroTitle title={current.title} />
         </h1>
-        <p className="mx-auto max-w-2xl text-sm text-white/95 sm:text-base md:text-lg lg:text-xl">
+        <p className="mx-auto max-w-2xl text-balance text-xs leading-relaxed text-white/95 sm:text-sm md:text-base lg:text-lg">
           {current.description}
         </p>
       </div>
 
-      <div className="absolute inset-x-0 bottom-4 z-30 px-3 sm:bottom-10 sm:px-6 md:bottom-16 lg:bottom-24">
+      <div className="absolute inset-x-0 bottom-3 z-30 px-3 sm:bottom-8 sm:px-6 md:bottom-14 lg:bottom-20">
         <div className="mx-auto w-full max-w-6xl">
           {current.type === "property" ? (
             <div className="rounded-xl bg-white/95 p-3 shadow-lg backdrop-blur sm:rounded-2xl sm:p-5 md:p-6">
@@ -223,7 +223,7 @@ export function HeroCarousel({
             </div>
           ) : (
             <div className="mx-auto max-w-3xl">
-              <div className="flex flex-col items-stretch justify-center gap-3 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur sm:rounded-2xl sm:p-5">
+              <div className="flex flex-col items-stretch justify-center gap-2.5 rounded-xl bg-white/95 p-3 shadow-lg backdrop-blur sm:gap-3 sm:rounded-2xl sm:p-5">
                 {showSectorStateFilter ? (
                   <CustomSelect
                     ariaLabel="Select state"
@@ -234,11 +234,11 @@ export function HeroCarousel({
                     className="w-full"
                   />
                 ) : null}
-                <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <div className="flex flex-col items-stretch justify-center gap-2.5 sm:flex-row sm:items-center sm:justify-center sm:gap-3">
                   {sectorHref && current.ctaLabel ? (
                     <Link
                       href={sectorHref}
-                      className="cursor-pointer w-full rounded-lg bg-[#3d7ea6] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#326a8c] sm:w-auto"
+                      className="cursor-pointer w-full rounded-lg bg-[#3d7ea6] px-4 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#326a8c] sm:w-auto sm:px-6 sm:py-3"
                     >
                       {current.ctaLabel}
                     </Link>
@@ -246,7 +246,7 @@ export function HeroCarousel({
                   {current.secondaryHref && current.secondaryLabel ? (
                     <Link
                       href={current.secondaryHref}
-                      className="cursor-pointer w-full rounded-lg border border-[#1e3a5f] px-6 py-3 text-center text-sm font-semibold text-[#1e3a5f] transition-colors hover:bg-[#1e3a5f]/5 sm:w-auto"
+                      className="cursor-pointer w-full rounded-lg border border-[#1e3a5f] px-4 py-2.5 text-center text-sm font-semibold text-[#1e3a5f] transition-colors hover:bg-[#1e3a5f]/5 sm:w-auto sm:px-6 sm:py-3"
                     >
                       {current.secondaryLabel}
                     </Link>
@@ -258,7 +258,7 @@ export function HeroCarousel({
         </div>
       </div>
 
-      <div className="absolute inset-x-0 top-[6%] z-40 flex justify-center gap-2 sm:top-[8%]">
+      <div className="absolute inset-x-0 top-3 z-40 flex flex-wrap justify-center gap-1.5 px-2 sm:top-5 sm:gap-2">
         {HERO_SLIDES.map((slide, index) => (
           <button
             key={slide.id}
@@ -268,8 +268,8 @@ export function HeroCarousel({
             onClick={() => setActive(index)}
             className={`cursor-pointer rounded-full transition-all duration-500 ${
               index === active
-                ? "h-2.5 w-8 bg-white"
-                : "h-2.5 w-2.5 bg-white/45 hover:bg-white/70"
+                ? "h-2 w-7 bg-white sm:h-2.5 sm:w-8"
+                : "h-2 w-2 bg-white/45 hover:bg-white/70 sm:h-2.5 sm:w-2.5"
             }`}
           />
         ))}
@@ -285,7 +285,7 @@ function HeroTitle({ title }: { title: string }) {
   return (
     <>
       <span className="block">{lines[0]}</span>
-      <span className="block">{lines.slice(1).join(" ")}</span>
+      <span className="block text-base sm:text-3xl md:text-4xl">{lines.slice(1).join(" ")}</span>
     </>
   );
 }

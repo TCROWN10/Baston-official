@@ -36,10 +36,10 @@ export function IntroPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen flex-col overflow-hidden bg-[#0f1f35]">
+    <main className="relative flex h-[100dvh] max-h-[100dvh] w-full max-w-[100vw] flex-col overflow-hidden bg-[#0f1f35]">
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-contain object-center sm:object-cover"
         autoPlay
         loop
         muted={muted}
@@ -48,28 +48,29 @@ export function IntroPage() {
         src={INTRO_VIDEO}
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0f1f35]/90 via-[#1e3a5f]/25 to-[#1e3a5f]/10" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0f1f35]/95 via-[#1e3a5f]/20 to-transparent" />
 
       <button
         type="button"
         onClick={toggleMute}
         aria-label={muted ? "Unmute video" : "Mute video"}
         aria-pressed={muted}
-        className="absolute right-4 top-4 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/45 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/60 sm:right-6 sm:top-6"
+        className="absolute right-3 top-3 z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/45 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/60 sm:right-6 sm:top-6 sm:h-11 sm:w-11"
       >
         {muted ? <VolumeMutedIcon /> : <VolumeOnIcon />}
       </button>
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-end px-4 pb-10 pt-16 sm:px-6 sm:pb-14">
-        <div className="w-full max-w-xl text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 sm:text-sm">
+      <div className="relative z-10 mt-auto w-full px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-8 sm:px-6 sm:pb-10">
+        <div className="mx-auto w-full max-w-xl text-center">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 sm:text-sm sm:tracking-[0.2em]">
             Welcome to {BRAND.name}
           </p>
           <Link
             href={HOME_HREF}
-            className="inline-flex w-full items-center justify-center rounded-xl bg-[#3d7ea6] px-8 py-4 text-base font-semibold text-white shadow-lg transition-colors hover:bg-[#326a8c] sm:w-auto sm:min-w-[320px] sm:text-lg"
+            className="inline-flex w-full touch-manipulation items-center justify-center rounded-xl bg-[#3d7ea6] px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-[#326a8c] sm:min-w-[320px] sm:px-8 sm:py-4 sm:text-base"
           >
-            Continue with Bastion Technology
+            <span className="sm:hidden">Continue with Bastion</span>
+            <span className="hidden sm:inline">Continue with Bastion Technology</span>
           </Link>
         </div>
       </div>

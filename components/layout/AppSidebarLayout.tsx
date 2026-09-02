@@ -157,7 +157,7 @@ export function AppSidebarLayout({
   };
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen max-w-[100vw] overflow-x-hidden bg-slate-100">
       {/* Mobile + tablet header */}
       <header className="relative z-[60] flex items-center gap-2 border-b border-slate-200 bg-white px-3 py-3 lg:hidden">
         <PanelToggleButton open={mobileOpen} onToggle={toggleMobile} />

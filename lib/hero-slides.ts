@@ -20,7 +20,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     type: "sector",
     image: "/facilities/ekiti/schools/christs-school-ado-ekiti.jpg",
     imageAlt: "Christ's School Ado-Ekiti Ekiti State secondary school",
-    title: "Assessment and gap analysis mapping every school by tier and metrics ",
+    title: "Assessment and gap analysis<br>mapping every school by tier and metrics",
     description:
       "Registered vs. non registered institutions across Primary, Secondary, and Tertiary  with infrastructure audits and teacher student metrics.",
     ctaLabel: "Education module",

@@ -7,6 +7,7 @@ import { UserAvatarMenu } from "@/components/UserAvatarMenu";
 import { BrandLogo } from "@/components/BrandLogo";
 import { BrandLogoLink } from "@/components/BrandLogoLink";
 import { BRAND_NAME } from "@/lib/data";
+import { BRAND } from "@/lib/brand";
 import { useAuth } from "@/lib/auth";
 import { HOME_HREF, navActive, DESKTOP_NAV, MOBILE_MARKETPLACE_NAV, MOBILE_USSAP_NAV, TABLET_CHIP_NAV } from "@/lib/site-nav";
 import { dashboardPath } from "@/lib/ussap/rbac";
@@ -38,11 +39,14 @@ export function Header() {
       : "rounded-lg px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-[#1e3a5f]/5 hover:text-[#1e3a5f]";
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 left-0 right-0 z-50 w-full max-w-[100vw] overflow-x-hidden border-b border-gray-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:px-6 sm:py-3.5 lg:px-10">
         <BrandLogoLink className="flex min-w-0 items-center gap-2">
           <BrandLogo size="sm" className="sm:h-10 sm:w-10" />
-          <span className="truncate text-base font-bold text-black sm:text-xl">{BRAND_NAME}</span>
+          <span className="truncate text-sm font-bold text-black sm:text-xl">
+            <span className="sm:hidden">{BRAND.shortName}</span>
+            <span className="hidden sm:inline">{BRAND_NAME}</span>
+          </span>
         </BrandLogoLink>
 
         <nav className="hidden items-center gap-1 xl:flex">

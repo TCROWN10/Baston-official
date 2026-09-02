@@ -98,7 +98,7 @@ export function PropertyTypeCarousel() {
   };
 
   return (
-    <section className="relative bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-10">
+    <section className="relative overflow-x-hidden bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 sm:mb-8">
           <h2 className="mb-2 text-xl font-bold text-black sm:mb-3 sm:text-2xl lg:text-3xl">
